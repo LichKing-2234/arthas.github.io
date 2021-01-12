@@ -1,3 +1,4 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 var __spreadArrays = (this && this.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
@@ -6,6 +7,8 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
+var YUVCanvas = require('yuv-canvas');
+var YUVBuffer = require('yuv-buffer');
 /**
  * @ignore
  */
@@ -513,19 +516,19 @@ var AgoraRtcEngine;
          * 17: The request to join the channel is rejected.
          *
          * - This error usually occurs when the user is already in the channel, and still calls the method to join the channel, for
-         * example, [joinChannel]{@link agoraRtcEngine.joinChannel} .
+         * example, [joinChannel]{@link AgoraRtcEngine.joinChannel} .
          * - This error usually occurs when the user tries to join a channel during a call test
-         * ([startEchoTest]{@link agoraRtcEngine.startEchoTest}). Once you call [startEchoTest]{@link agoraRtcEngine.startEchoTest} , you need to call
-         * [stopEchoTest]{@link agoraRtcEngine.stopEchoTest} before joining a channel.
+         * ([startEchoTest]{@link AgoraRtcEngine.startEchoTest}). Once you call [startEchoTest]{@link AgoraRtcEngine.startEchoTest} , you need to call
+         * [stopEchoTest]{@link AgoraRtcEngine.stopEchoTest} before joining a channel.
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_JOIN_CHANNEL_REJECTED"] = 17] = "ERR_JOIN_CHANNEL_REJECTED";
         /**
          * 18: The request to leave the channel is rejected.
          *
          * This error usually occurs:
-         * - When the user has left the channel and still calls [leaveChannel]{@link agoraRtcEngine.leaveChannel} to leave the channel.
-         * In this case, stop calling [leaveChannel]{@link agoraRtcEngine.leaveChannel}.
-         * - When the user has not joined the channel and still calls [leaveChannel]{@link agoraRtcEngine.leaveChannel} to leave the channel.
+         * - When the user has left the channel and still calls [leaveChannel]{@link AgoraRtcEngine.leaveChannel} to leave the channel.
+         * In this case, stop calling [leaveChannel]{@link AgoraRtcEngine.leaveChannel}.
+         * - When the user has not joined the channel and still calls [leaveChannel]{@link AgoraRtcEngine.leaveChannel} to leave the channel.
          * In this case, no extra operation is needed.
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_LEAVE_CHANNEL_REJECTED"] = 18] = "ERR_LEAVE_CHANNEL_REJECTED";
@@ -555,7 +558,7 @@ var AgoraRtcEngine;
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_INVALID_CHANNEL_NAME"] = 102] = "ERR_INVALID_CHANNEL_NAME";
         /**
          * 103: Fails to get server resources in the specified region. Please try to specify another region when calling
-         * [init]{@link agoraRtcEngine.init} .
+         * [init]{@link AgoraRtcEngine.init} .
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_NO_SERVER_RESOURCES"] = 103] = "ERR_NO_SERVER_RESOURCES";
         /**
@@ -578,7 +581,7 @@ var AgoraRtcEngine;
          * The token is invalid due to one of the following reasons:
          * - The App Certificate for the project is enabled in Console, but the user is still using the App ID. Once the App
          * Certificate is enabled, the user must use a token.
-         * - The uid is mandatory, and users must set the same uid as the one set in the [joinChannel]{@link agoraRtcEngine.joinChannel} method.
+         * - The uid is mandatory, and users must set the same uid as the one set in the [joinChannel]{@link AgoraRtcEngine.joinChannel} method.
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_INVALID_TOKEN"] = 110] = "ERR_INVALID_TOKEN";
         /**
@@ -595,17 +598,17 @@ var AgoraRtcEngine;
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_NOT_IN_CHANNEL"] = 113] = "ERR_NOT_IN_CHANNEL";
         /**
          * 114: The size of the sent data is over 1024 bytes when the user calls the
-         * [sendStreamMessage]{@link agoraRtcEngine.sendStreamMessage} method.
+         * [sendStreamMessage]{@link AgoraRtcEngine.sendStreamMessage} method.
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_SIZE_TOO_LARGE"] = 114] = "ERR_SIZE_TOO_LARGE";
         /**
          * 115: The bitrate of the sent data exceeds the limit of 6 Kbps when the user calls the
-         * [sendStreamMessage]{@link agoraRtcEngine.sendStreamMessage} method.
+         * [sendStreamMessage]{@link AgoraRtcEngine.sendStreamMessage} method.
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_BITRATE_LIMIT"] = 115] = "ERR_BITRATE_LIMIT";
         /**
          * 116: Too many data streams (over 5 streams) are created when the user calls the
-         * [createDataStream]{@link agoraRtcEngine.createDataStream} method.
+         * [createDataStream]{@link AgoraRtcEngine.createDataStream} method.
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_TOO_MANY_DATA_STREAMS"] = 116] = "ERR_TOO_MANY_DATA_STREAMS";
         /**
@@ -649,7 +652,7 @@ var AgoraRtcEngine;
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_WATERMARK_READ"] = 129] = "ERR_WATERMARK_READ";
         /**
-         * 130: Encryption is enabled when the user calls the [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl} method
+         * 130: Encryption is enabled when the user calls the [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl} method
          * (CDN live streaming does not support encrypted streams).
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_ENCRYPTED_STREAM_NOT_ALLOWED_PUBLISH"] = 130] = "ERR_ENCRYPTED_STREAM_NOT_ALLOWED_PUBLISH";
@@ -659,7 +662,7 @@ var AgoraRtcEngine;
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_INVALID_USER_ACCOUNT"] = 134] = "ERR_INVALID_USER_ACCOUNT";
         /**
          * 151: CDN related errors. Remove the original URL address and add a new one by calling the
-         * [removePublishStreamUrl]{@link agoraRtcEngine.removePublishStreamUrl} and [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl} methods.
+         * [removePublishStreamUrl]{@link AgoraRtcEngine.removePublishStreamUrl} and [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl} methods.
          */
         ERROR_CODE_TYPE[ERROR_CODE_TYPE["ERR_PUBLISH_STREAM_CDN_ERROR"] = 151] = "ERR_PUBLISH_STREAM_CDN_ERROR";
         /**
@@ -1493,21 +1496,21 @@ var AgoraRtcEngine;
     var AUDIO_MIXING_STATE_TYPE;
     (function (AUDIO_MIXING_STATE_TYPE) {
         /**
-         * 710: The audio mixing file is playing after the method call of [startAudioMixing]{@link agoraRtcEngine.startAudioMixing} or
-         * [resumeAudioMixing]{@link agoraRtcEngine.resumeAudioMixing} succeeds.
+         * 710: The audio mixing file is playing after the method call of [startAudioMixing]{@link AgoraRtcEngine.startAudioMixing} or
+         * [resumeAudioMixing]{@link AgoraRtcEngine.resumeAudioMixing} succeeds.
          */
         AUDIO_MIXING_STATE_TYPE[AUDIO_MIXING_STATE_TYPE["AUDIO_MIXING_STATE_PLAYING"] = 710] = "AUDIO_MIXING_STATE_PLAYING";
         /**
-         * 711: The audio mixing file pauses playing after the method call of [pauseAudioMixing]{@link agoraRtcEngine.pauseAudioMixing} succeeds.
+         * 711: The audio mixing file pauses playing after the method call of [pauseAudioMixing]{@link AgoraRtcEngine.pauseAudioMixing} succeeds.
          */
         AUDIO_MIXING_STATE_TYPE[AUDIO_MIXING_STATE_TYPE["AUDIO_MIXING_STATE_PAUSED"] = 711] = "AUDIO_MIXING_STATE_PAUSED";
         /**
-         * 713: The audio mixing file stops playing after the method call of [stopAudioMixing]{@link agoraRtcEngine.stopAudioMixing} succeeds.
+         * 713: The audio mixing file stops playing after the method call of [stopAudioMixing]{@link AgoraRtcEngine.stopAudioMixing} succeeds.
          */
         AUDIO_MIXING_STATE_TYPE[AUDIO_MIXING_STATE_TYPE["AUDIO_MIXING_STATE_STOPPED"] = 713] = "AUDIO_MIXING_STATE_STOPPED";
         /**
          * 714: An exception occurs when playing the audio mixing file. See
-         * [AUDIO_MIXING_ERROR_TYPE]{@link agoraRtcEngine.AUDIO_MIXING_ERROR_TYPE}.
+         * [AUDIO_MIXING_ERROR_TYPE]{@link AgoraRtcEngine.AUDIO_MIXING_ERROR_TYPE}.
          */
         AUDIO_MIXING_STATE_TYPE[AUDIO_MIXING_STATE_TYPE["AUDIO_MIXING_STATE_FAILED"] = 714] = "AUDIO_MIXING_STATE_FAILED";
     })(AUDIO_MIXING_STATE_TYPE = AgoraRtcEngine.AUDIO_MIXING_STATE_TYPE || (AgoraRtcEngine.AUDIO_MIXING_STATE_TYPE = {}));
@@ -1598,7 +1601,7 @@ var AgoraRtcEngine;
          * 1: The local video capturing device starts successfully.
          *
          * The SDK also reports this state when you share a maximized window by calling
-         * [startScreenCaptureByWindowId]{@link agoraRtcEngine.startScreenCaptureByWindowId}.
+         * [startScreenCaptureByWindowId]{@link AgoraRtcEngine.startScreenCaptureByWindowId}.
          */
         LOCAL_VIDEO_STREAM_STATE[LOCAL_VIDEO_STREAM_STATE["LOCAL_VIDEO_STREAM_STATE_CAPTURING"] = 1] = "LOCAL_VIDEO_STREAM_STATE_CAPTURING";
         /**
@@ -1641,7 +1644,7 @@ var AgoraRtcEngine;
         LOCAL_VIDEO_STREAM_ERROR[LOCAL_VIDEO_STREAM_ERROR["LOCAL_VIDEO_STREAM_ERROR_ENCODE_FAILURE"] = 5] = "LOCAL_VIDEO_STREAM_ERROR_ENCODE_FAILURE";
         /**
          * 11: The shared window is minimized when you call
-         * [startScreenCaptureByWindowId]{@link agoraRtcEngine.startScreenCaptureByWindowId} to share a window.
+         * [startScreenCaptureByWindowId]{@link AgoraRtcEngine.startScreenCaptureByWindowId} to share a window.
          */
         LOCAL_VIDEO_STREAM_ERROR[LOCAL_VIDEO_STREAM_ERROR["LOCAL_VIDEO_STREAM_ERROR_SCREEN_CAPTURE_WINDOW_MINIMIZED"] = 11] = "LOCAL_VIDEO_STREAM_ERROR_SCREEN_CAPTURE_WINDOW_MINIMIZED";
     })(LOCAL_VIDEO_STREAM_ERROR = AgoraRtcEngine.LOCAL_VIDEO_STREAM_ERROR || (AgoraRtcEngine.LOCAL_VIDEO_STREAM_ERROR = {}));
@@ -2278,12 +2281,12 @@ var AgoraRtcEngine;
     (function (RTMP_STREAM_PUBLISH_STATE) {
         /**
          * The RTMP streaming has not started or has ended. This state is also triggered after you remove an RTMP address from
-         * the CDN by calling [removePublishStreamUrl]{@link agoraRtcEngine.removePublishStreamUrl}.
+         * the CDN by calling [removePublishStreamUrl]{@link AgoraRtcEngine.removePublishStreamUrl}.
          */
         RTMP_STREAM_PUBLISH_STATE[RTMP_STREAM_PUBLISH_STATE["RTMP_STREAM_PUBLISH_STATE_IDLE"] = 0] = "RTMP_STREAM_PUBLISH_STATE_IDLE";
         /**
          * The SDK is connecting to Agora streaming server and the RTMP server. This state is triggered after you call the
-         * [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl} method.
+         * [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl} method.
          */
         RTMP_STREAM_PUBLISH_STATE[RTMP_STREAM_PUBLISH_STATE["RTMP_STREAM_PUBLISH_STATE_CONNECTING"] = 1] = "RTMP_STREAM_PUBLISH_STATE_CONNECTING";
         /**
@@ -2295,14 +2298,14 @@ var AgoraRtcEngine;
          * RTMP streaming and returns this state.
          * - If the SDK successfully resumes the streaming, `RTMP_STREAM_PUBLISH_STATE_RUNNING(2)` returns.
          * - If the streaming does not resume within 60 seconds or server errors occur,
-         * [RTMP_STREAM_PUBLISH_STATE_FAILURE]{@link agoraRtcEngine.RTMP_STREAM_PUBLISH_STATE.RTMP_STREAM_PUBLISH_STATE_FAILURE}(4) returns.
-         * You can also reconnect to the server by calling the [removePublishStreamUrl]{@link agoraRtcEngine.removePublishStreamUrl} and
-         * [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl} methods.
+         * [RTMP_STREAM_PUBLISH_STATE_FAILURE]{@link AgoraRtcEngine.RTMP_STREAM_PUBLISH_STATE.RTMP_STREAM_PUBLISH_STATE_FAILURE}(4) returns.
+         * You can also reconnect to the server by calling the [removePublishStreamUrl]{@link AgoraRtcEngine.removePublishStreamUrl} and
+         * [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl} methods.
          */
         RTMP_STREAM_PUBLISH_STATE[RTMP_STREAM_PUBLISH_STATE["RTMP_STREAM_PUBLISH_STATE_RECOVERING"] = 3] = "RTMP_STREAM_PUBLISH_STATE_RECOVERING";
         /**
          * The RTMP streaming fails. See the `errCode` parameter for the detailed error information. You can also call the
-         * [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl} method to publish the RTMP streaming again.
+         * [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl} method to publish the RTMP streaming again.
          */
         RTMP_STREAM_PUBLISH_STATE[RTMP_STREAM_PUBLISH_STATE["RTMP_STREAM_PUBLISH_STATE_FAILURE"] = 4] = "RTMP_STREAM_PUBLISH_STATE_FAILURE";
     })(RTMP_STREAM_PUBLISH_STATE = AgoraRtcEngine.RTMP_STREAM_PUBLISH_STATE || (AgoraRtcEngine.RTMP_STREAM_PUBLISH_STATE = {}));
@@ -2316,9 +2319,9 @@ var AgoraRtcEngine;
          */
         RTMP_STREAM_PUBLISH_ERROR[RTMP_STREAM_PUBLISH_ERROR["RTMP_STREAM_PUBLISH_ERROR_OK"] = 0] = "RTMP_STREAM_PUBLISH_ERROR_OK";
         /**
-         * Invalid argument used. If, for example, you do not call the [setLiveTranscoding]{@link agoraRtcEngine.setLiveTranscoding} method to
-         * configure the [LiveTranscoding]{@link agoraRtcEngine.LiveTranscoding} parameters before calling the
-         * [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl} method, the SDK returns this error. Check whether you set the
+         * Invalid argument used. If, for example, you do not call the [setLiveTranscoding]{@link AgoraRtcEngine.setLiveTranscoding} method to
+         * configure the [LiveTranscoding]{@link AgoraRtcEngine.LiveTranscoding} parameters before calling the
+         * [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl} method, the SDK returns this error. Check whether you set the
          * parameters in the *setLiveTranscoding* method properly.
          */
         RTMP_STREAM_PUBLISH_ERROR[RTMP_STREAM_PUBLISH_ERROR["RTMP_STREAM_PUBLISH_ERROR_INVALID_ARGUMENT"] = 1] = "RTMP_STREAM_PUBLISH_ERROR_INVALID_ARGUMENT";
@@ -2327,12 +2330,12 @@ var AgoraRtcEngine;
          */
         RTMP_STREAM_PUBLISH_ERROR[RTMP_STREAM_PUBLISH_ERROR["RTMP_STREAM_PUBLISH_ERROR_ENCRYPTED_STREAM_NOT_ALLOWED"] = 2] = "RTMP_STREAM_PUBLISH_ERROR_ENCRYPTED_STREAM_NOT_ALLOWED";
         /**
-         * Timeout for the RTMP streaming. Call the [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl} method to publish
+         * Timeout for the RTMP streaming. Call the [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl} method to publish
          * the streaming again.
          */
         RTMP_STREAM_PUBLISH_ERROR[RTMP_STREAM_PUBLISH_ERROR["RTMP_STREAM_PUBLISH_ERROR_CONNECTION_TIMEOUT"] = 3] = "RTMP_STREAM_PUBLISH_ERROR_CONNECTION_TIMEOUT";
         /**
-         * An error occurs in Agora's streaming server. Call the [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl} method to
+         * An error occurs in Agora's streaming server. Call the [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl} method to
          * publish the streaming again.
          */
         RTMP_STREAM_PUBLISH_ERROR[RTMP_STREAM_PUBLISH_ERROR["RTMP_STREAM_PUBLISH_ERROR_INTERNAL_SERVER_ERROR"] = 4] = "RTMP_STREAM_PUBLISH_ERROR_INTERNAL_SERVER_ERROR";
@@ -2436,23 +2439,23 @@ var AgoraRtcEngine;
         REMOTE_VIDEO_STREAM_TYPE[REMOTE_VIDEO_STREAM_TYPE["REMOTE_VIDEO_STREAM_LOW"] = 1] = "REMOTE_VIDEO_STREAM_LOW";
     })(REMOTE_VIDEO_STREAM_TYPE = AgoraRtcEngine.REMOTE_VIDEO_STREAM_TYPE || (AgoraRtcEngine.REMOTE_VIDEO_STREAM_TYPE = {}));
     /**
-     * The use mode of the audio data in the [onRecordAudioFrame]{@link agoraRtcEngine.onRecordAudioFrame} or
-     * [onPlaybackAudioFrame]{@link agoraRtcEngine.onPlaybackAudioFrame} callback.
+     * The use mode of the audio data in the [onRecordAudioFrame]{@link AgoraRtcEngine.onRecordAudioFrame} or
+     * [onPlaybackAudioFrame]{@link AgoraRtcEngine.onPlaybackAudioFrame} callback.
      */
     var RAW_AUDIO_FRAME_OP_MODE_TYPE;
     (function (RAW_AUDIO_FRAME_OP_MODE_TYPE) {
         /**
-         * 0: Read-only mode: Users only read the [AudioFrame]{@link agoraRtcEngine.AudioFrame} data without modifying anything. For example,
+         * 0: Read-only mode: Users only read the [AudioFrame]{@link AgoraRtcEngine.AudioFrame} data without modifying anything. For example,
          * when users acquire the data with the Agora SDK, then push the RTMP streams.
          */
         RAW_AUDIO_FRAME_OP_MODE_TYPE[RAW_AUDIO_FRAME_OP_MODE_TYPE["RAW_AUDIO_FRAME_OP_MODE_READ_ONLY"] = 0] = "RAW_AUDIO_FRAME_OP_MODE_READ_ONLY";
         /**
-         * 1: Write-only mode: Users replace the [AudioFrame]{@link agoraRtcEngine.AudioFrame} data with their own data and pass the data to
+         * 1: Write-only mode: Users replace the [AudioFrame]{@link AgoraRtcEngine.AudioFrame} data with their own data and pass the data to
          * the SDK for encoding. For example, when users acquire the data.
          */
         RAW_AUDIO_FRAME_OP_MODE_TYPE[RAW_AUDIO_FRAME_OP_MODE_TYPE["RAW_AUDIO_FRAME_OP_MODE_WRITE_ONLY"] = 1] = "RAW_AUDIO_FRAME_OP_MODE_WRITE_ONLY";
         /**
-         * 2: Read and write mode: Users read the data from [AudioFrame]{@link agoraRtcEngine.AudioFrame} , modify it, and then play it.
+         * 2: Read and write mode: Users read the data from [AudioFrame]{@link AgoraRtcEngine.AudioFrame} , modify it, and then play it.
          * For example, when users have their own sound-effect processing module and perform some voice pre-processing, such as
          * a voice change.
          */
@@ -2752,7 +2755,7 @@ var AgoraRtcEngine;
          * The reverberation of the virtual stereo. The virtual stereo is an effect that renders the monophonic
          * audio as the stereo audio, so that all users in the channel can hear the stereo voice effect.
          * To achieve better virtual stereo reverberation, Agora recommends setting `profile` in
-         * [setAudioProfile]{@link agoraRtcEngine.setAudioProfile} as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)`.
+         * [setAudioProfile]{@link AgoraRtcEngine.setAudioProfile} as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)`.
          */
         AUDIO_REVERB_PRESET[AUDIO_REVERB_PRESET["AUDIO_VIRTUAL_STEREO"] = 2097153] = "AUDIO_VIRTUAL_STEREO";
     })(AUDIO_REVERB_PRESET = AgoraRtcEngine.AUDIO_REVERB_PRESET || (AgoraRtcEngine.AUDIO_REVERB_PRESET = {}));
@@ -3005,9 +3008,9 @@ var AgoraRtcEngine;
     (function (REMOTE_AUDIO_STATE) {
         /**
          * 0: The remote audio is in the default state, probably due to
-         * [REMOTE_AUDIO_REASON_LOCAL_MUTED]{@link agoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_LOCAL_MUTED}(3),
-         * [REMOTE_AUDIO_REASON_REMOTE_MUTED]{@link agoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_REMOTE_MUTED} (5), or
-         * [REMOTE_AUDIO_REASON_REMOTE_OFFLINE]{@link agoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_REMOTE_OFFLINE} (7).
+         * [REMOTE_AUDIO_REASON_LOCAL_MUTED]{@link AgoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_LOCAL_MUTED}(3),
+         * [REMOTE_AUDIO_REASON_REMOTE_MUTED]{@link AgoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_REMOTE_MUTED} (5), or
+         * [REMOTE_AUDIO_REASON_REMOTE_OFFLINE]{@link AgoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_REMOTE_OFFLINE} (7).
          */
         REMOTE_AUDIO_STATE[REMOTE_AUDIO_STATE["REMOTE_AUDIO_STATE_STOPPED"] = 0] = "REMOTE_AUDIO_STATE_STOPPED";
         /**
@@ -3016,19 +3019,19 @@ var AgoraRtcEngine;
         REMOTE_AUDIO_STATE[REMOTE_AUDIO_STATE["REMOTE_AUDIO_STATE_STARTING"] = 1] = "REMOTE_AUDIO_STATE_STARTING";
         /**
          * 2: The remote audio stream is decoded and plays normally, probably
-         * due to [REMOTE_AUDIO_REASON_NETWORK_RECOVERY]{@link agoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_NETWORK_RECOVERY}(2),
-         * [REMOTE_AUDIO_REASON_LOCAL_UNMUTED]{@link agoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_LOCAL_UNMUTED}(4), or
-         * [REMOTE_AUDIO_REASON_REMOTE_UNMUTED]{@link agoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_REMOTE_UNMUTED}(6).
+         * due to [REMOTE_AUDIO_REASON_NETWORK_RECOVERY]{@link AgoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_NETWORK_RECOVERY}(2),
+         * [REMOTE_AUDIO_REASON_LOCAL_UNMUTED]{@link AgoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_LOCAL_UNMUTED}(4), or
+         * [REMOTE_AUDIO_REASON_REMOTE_UNMUTED]{@link AgoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_REMOTE_UNMUTED}(6).
          */
         REMOTE_AUDIO_STATE[REMOTE_AUDIO_STATE["REMOTE_AUDIO_STATE_DECODING"] = 2] = "REMOTE_AUDIO_STATE_DECODING";
         /**
          * 3: The remote audio is frozen, probably due to
-         * [REMOTE_AUDIO_REASON_NETWORK_CONGESTION]{@link agoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_NETWORK_CONGESTION}(1).
+         * [REMOTE_AUDIO_REASON_NETWORK_CONGESTION]{@link AgoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_NETWORK_CONGESTION}(1).
          */
         REMOTE_AUDIO_STATE[REMOTE_AUDIO_STATE["REMOTE_AUDIO_STATE_FROZEN"] = 3] = "REMOTE_AUDIO_STATE_FROZEN";
         /**
          * 4: The remote audio fails to start, probably due to
-         * [REMOTE_AUDIO_REASON_INTERNAL]{@link agoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_INTERNAL}(0).
+         * [REMOTE_AUDIO_REASON_INTERNAL]{@link AgoraRtcEngine.REMOTE_AUDIO_STATE_REASON.REMOTE_AUDIO_REASON_INTERNAL}(0).
          */
         REMOTE_AUDIO_STATE[REMOTE_AUDIO_STATE["REMOTE_AUDIO_STATE_FAILED"] = 4] = "REMOTE_AUDIO_STATE_FAILED";
     })(REMOTE_AUDIO_STATE = AgoraRtcEngine.REMOTE_AUDIO_STATE || (AgoraRtcEngine.REMOTE_AUDIO_STATE = {}));
@@ -3081,9 +3084,9 @@ var AgoraRtcEngine;
     (function (REMOTE_VIDEO_STATE) {
         /**
          * 0: The remote video is in the default state, probably due to
-         * [REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED}(3),
-         * [REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED}(5),
-         * or [REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE}(7).
+         * [REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_LOCAL_MUTED}(3),
+         * [REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED}(5),
+         * or [REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_REMOTE_OFFLINE}(7).
          */
         REMOTE_VIDEO_STATE[REMOTE_VIDEO_STATE["REMOTE_VIDEO_STATE_STOPPED"] = 0] = "REMOTE_VIDEO_STATE_STOPPED";
         /**
@@ -3092,21 +3095,21 @@ var AgoraRtcEngine;
         REMOTE_VIDEO_STATE[REMOTE_VIDEO_STATE["REMOTE_VIDEO_STATE_STARTING"] = 1] = "REMOTE_VIDEO_STATE_STARTING";
         /**
          * 2: The remote video stream is decoded and plays normally, probably due to
-         * [REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY}(2),
-         * [REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED}(4),
-         * [REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED}(6),
-         * or [REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY} (9).
+         * [REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_NETWORK_RECOVERY}(2),
+         * [REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_LOCAL_UNMUTED}(4),
+         * [REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED}(6),
+         * or [REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK_RECOVERY} (9).
          */
         REMOTE_VIDEO_STATE[REMOTE_VIDEO_STATE["REMOTE_VIDEO_STATE_DECODING"] = 2] = "REMOTE_VIDEO_STATE_DECODING";
         /**
          * 3: The remote video is frozen, probably due to
-         * [REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION}(1)
-         * or [REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK}(8).
+         * [REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_NETWORK_CONGESTION}(1)
+         * or [REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_AUDIO_FALLBACK}(8).
          */
         REMOTE_VIDEO_STATE[REMOTE_VIDEO_STATE["REMOTE_VIDEO_STATE_FROZEN"] = 3] = "REMOTE_VIDEO_STATE_FROZEN";
         /**
          * 4: The remote video fails to start, probably due to
-         * [REMOTE_VIDEO_STATE_REASON_INTERNAL]{@link agoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_INTERNAL}(0).
+         * [REMOTE_VIDEO_STATE_REASON_INTERNAL]{@link AgoraRtcEngine.REMOTE_VIDEO_STATE_REASON.REMOTE_VIDEO_STATE_REASON_INTERNAL}(0).
          */
         REMOTE_VIDEO_STATE[REMOTE_VIDEO_STATE["REMOTE_VIDEO_STATE_FAILED"] = 4] = "REMOTE_VIDEO_STATE_FAILED";
     })(REMOTE_VIDEO_STATE = AgoraRtcEngine.REMOTE_VIDEO_STATE || (AgoraRtcEngine.REMOTE_VIDEO_STATE = {}));
@@ -3121,12 +3124,12 @@ var AgoraRtcEngine;
         STREAM_PUBLISH_STATE[STREAM_PUBLISH_STATE["PUB_STATE_IDLE"] = 0] = "PUB_STATE_IDLE";
         /**
          * 1: Fails to publish the local stream. Possible reasons:
-         * - The local user calls [muteLocalAudioStream(true)]{@link agoraRtcEngine.muteLocalAudioStream} or
-         * [muteLocalVideoStream(true)]{@link agoraRtcEngine.muteLocalVideoStream} to stop sending local streams.
-         * - The local user calls [disableAudio]{@link agoraRtcEngine.disableAudio} or [disableVideo]{@link agoraRtcEngine.disableVideo} to
+         * - The local user calls [muteLocalAudioStream(true)]{@link AgoraRtcEngine.muteLocalAudioStream} or
+         * [muteLocalVideoStream(true)]{@link AgoraRtcEngine.muteLocalVideoStream} to stop sending local streams.
+         * - The local user calls [disableAudio]{@link AgoraRtcEngine.disableAudio} or [disableVideo]{@link AgoraRtcEngine.disableVideo} to
          * disable the entire audio or video module.
-         * - The local user calls [enableLocalAudio(false)]{@link agoraRtcEngine.enableLocalAudio} or
-         * [enableLocalVideo(false)]{@link agoraRtcEngine.enableLocalVideo} to disable the local audio sampling or video capturing.
+         * - The local user calls [enableLocalAudio(false)]{@link AgoraRtcEngine.enableLocalAudio} or
+         * [enableLocalVideo(false)]{@link AgoraRtcEngine.enableLocalVideo} to disable the local audio sampling or video capturing.
          * - The role of the local user is `AUDIENCE`.
          */
         STREAM_PUBLISH_STATE[STREAM_PUBLISH_STATE["PUB_STATE_NO_PUBLISHED"] = 1] = "PUB_STATE_NO_PUBLISHED";
@@ -3151,16 +3154,16 @@ var AgoraRtcEngine;
         /**
          * 1: Fails to subscribe to the remote stream. Possible reasons:
          * - The remote user:
-         *   - Calls [muteLocalAudioStream(true)]{@link agoraRtcEngine.muteLocalAudioStream} to stop sending local streams.
-         *   - Calls [disableAudio]{@link agoraRtcEngine.disableAudio} to disable the
+         *   - Calls [muteLocalAudioStream(true)]{@link AgoraRtcEngine.muteLocalAudioStream} to stop sending local streams.
+         *   - Calls [disableAudio]{@link AgoraRtcEngine.disableAudio} to disable the
          * entire audio modules.
-         *   - Calls [enableLocalAudio(false)]{@link agoraRtcEngine.enableLocalAudio}
+         *   - Calls [enableLocalAudio(false)]{@link AgoraRtcEngine.enableLocalAudio}
          * to disable the local audio sampling.
          *   - The role of the remote user is `AUDIENCE`.
          * - The local user calls the following methods to stop receiving remote streams:
-         * Calls [muteRemoteAudioStream(true)]{@link agoraRtcEngine.muteRemoteAudioStream},
-         * [muteAllRemoteAudioStreams(true)]{@link agoraRtcEngine.muteAllRemoteAudioStreams} , or
-         * [setDefaultMuteAllRemoteAudioStreams(true)]{@link agoraRtcEngine.setDefaultMuteAllRemoteAudioStreams} to stop receiving remote
+         * Calls [muteRemoteAudioStream(true)]{@link AgoraRtcEngine.muteRemoteAudioStream},
+         * [muteAllRemoteAudioStreams(true)]{@link AgoraRtcEngine.muteAllRemoteAudioStreams} , or
+         * [setDefaultMuteAllRemoteAudioStreams(true)]{@link AgoraRtcEngine.setDefaultMuteAllRemoteAudioStreams} to stop receiving remote
          * audio streams.
          */
         STREAM_SUBSCRIBE_STATE[STREAM_SUBSCRIBE_STATE["SUB_STATE_NO_SUBSCRIBED"] = 1] = "SUB_STATE_NO_SUBSCRIBED";
@@ -3355,8 +3358,8 @@ var AgoraRtcEngine;
         /**
          * 1: Under poor downlink network conditions, the remote video stream, to which you subscribe, falls back to the
          * low-stream (low resolution and low bitrate) video. You can set this option only in the
-         * [setRemoteSubscribeFallbackOption]{@link agoraRtcEngine.setRemoteSubscribeFallbackOption} method. Nothing happens when you set this
-         * in the [setLocalPublishFallbackOption]{@link agoraRtcEngine.setLocalPublishFallbackOption} method.
+         * [setRemoteSubscribeFallbackOption]{@link AgoraRtcEngine.setRemoteSubscribeFallbackOption} method. Nothing happens when you set this
+         * in the [setLocalPublishFallbackOption]{@link AgoraRtcEngine.setLocalPublishFallbackOption} method.
          */
         STREAM_FALLBACK_OPTIONS[STREAM_FALLBACK_OPTIONS["STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW"] = 1] = "STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW";
         /**
@@ -3379,7 +3382,7 @@ var AgoraRtcEngine;
         CAPTURER_OUTPUT_PREFERENCE[CAPTURER_OUTPUT_PREFERENCE["CAPTURER_OUTPUT_PREFERENCE_AUTO"] = 0] = "CAPTURER_OUTPUT_PREFERENCE_AUTO";
         /**
          * 1: Prioritizes the system performance. The SDK chooses the dimension and frame rate of the local camera capture
-         * closest to those set by [setVideoEncoderConfiguration]{@link agoraRtcEngine.setVideoEncoderConfiguration}
+         * closest to those set by [setVideoEncoderConfiguration]{@link AgoraRtcEngine.setVideoEncoderConfiguration}
          */
         CAPTURER_OUTPUT_PREFERENCE[CAPTURER_OUTPUT_PREFERENCE["CAPTURER_OUTPUT_PREFERENCE_PERFORMANCE"] = 1] = "CAPTURER_OUTPUT_PREFERENCE_PERFORMANCE";
         /**
@@ -3409,17 +3412,17 @@ var AgoraRtcEngine;
     (function (CONNECTION_STATE_TYPE) {
         /**
          * 1: The SDK is disconnected from Agora's edge server.
-         * - This is the initial state before calling the [joinChannel]{@link agoraRtcEngine.joinChannel} method.
-         * - The SDK also enters this state when the application calls the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method.
+         * - This is the initial state before calling the [joinChannel]{@link AgoraRtcEngine.joinChannel} method.
+         * - The SDK also enters this state when the application calls the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method.
          */
         CONNECTION_STATE_TYPE[CONNECTION_STATE_TYPE["CONNECTION_STATE_DISCONNECTED"] = 1] = "CONNECTION_STATE_DISCONNECTED";
         /**
          * 2: The SDK is connecting to Agora's edge server.
-         * - When the application calls the [joinChannel]{@link agoraRtcEngine.joinChannel} method, the SDK starts to establish a
+         * - When the application calls the [joinChannel]{@link AgoraRtcEngine.joinChannel} method, the SDK starts to establish a
          * connection to the specified channel, triggers the [onConnectionStateChanged]{@link AgoraRtcEvents.onConnectionStateChanged}
          * callback, and switches to the `CONNECTION_STATE_CONNECTING` state.
          * - When the SDK successfully joins the channel, it triggers the `onConnectionStateChanged` callback and switches to the
-         * [CONNECTION_STATE_CONNECTED]{@link agoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_CONNECTED} state.
+         * [CONNECTION_STATE_CONNECTED]{@link AgoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_CONNECTED} state.
          * - After the SDK joins the channel and when it finishes initializing the media engine, the SDK triggers the
          * [onJoinChannelSuccess]{@link AgoraRtcEvents.onJoinChannelSuccess} callback.
          */
@@ -3432,7 +3435,7 @@ var AgoraRtcEngine;
          * tries to reconnect and triggers:
          * - The [onConnectionInterrupted]{@link AgoraRtcEvents.onConnectionInterrupted} callback (deprecated).
          * - The [onConnectionStateChanged]{@link AgoraRtcEvents.onConnectionStateChanged} callback and switches to the
-         * [CONNECTION_STATE_RECONNECTING]{@link agoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_RECONNECTING} state.
+         * [CONNECTION_STATE_RECONNECTING]{@link AgoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_RECONNECTING} state.
          */
         CONNECTION_STATE_TYPE[CONNECTION_STATE_TYPE["CONNECTION_STATE_CONNECTED"] = 3] = "CONNECTION_STATE_CONNECTED";
         /**
@@ -3440,18 +3443,18 @@ var AgoraRtcEngine;
          *
          * - If the SDK cannot rejoin the channel within 10 seconds after being disconnected from Agora's edge server,
          * the SDK triggers the [onConnectionLost]{@link AgoraRtcEvents.onConnectionLost} callback, stays in the
-         * [CONNECTION_STATE_RECONNECTING]{@link agoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_RECONNECTING} state, and keeps
+         * [CONNECTION_STATE_RECONNECTING]{@link AgoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_RECONNECTING} state, and keeps
          * rejoining the channel.
          * - If the SDK fails to rejoin the channel 20 minutes after being disconnected from Agora's edge server, the SDK
          * triggers the [onConnectionStateChanged]{@link AgoraRtcEvents.onConnectionStateChanged} callback, switches to the
-         * [CONNECTION_STATE_FAILED]{@link agoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_FAILED} state, and stops rejoining the channel.
+         * [CONNECTION_STATE_FAILED]{@link AgoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_FAILED} state, and stops rejoining the channel.
          */
         CONNECTION_STATE_TYPE[CONNECTION_STATE_TYPE["CONNECTION_STATE_RECONNECTING"] = 4] = "CONNECTION_STATE_RECONNECTING";
         /**
          * 5: The SDK fails to connect to Agora's edge server or join the channel.
          *
-         * You must call the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method to leave this state, and call the
-         * [joinChannel]{@link agoraRtcEngine.joinChannel} method again to rejoin the channel.
+         * You must call the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method to leave this state, and call the
+         * [joinChannel]{@link AgoraRtcEngine.joinChannel} method again to rejoin the channel.
          *
          * If the SDK is banned from joining the channel by Agora's edge server (through the RESTful API), the SDK triggers the
          * [onConnectionBanned]{@link AgoraRtcEvents.onConnectionBanned} (deprecated) and
@@ -3501,7 +3504,7 @@ var AgoraRtcEngine;
          *
          * - The App Certificate for the project is enabled in Console, but you do not use Token when joining the channel.
          * If you enable the App Certificate, you must use a token to join the channel.
-         * - The uid that you specify in the [joinChannel]{@link agoraRtcEngine.joinChannel} method is different from the uid that
+         * - The uid that you specify in the [joinChannel]{@link AgoraRtcEngine.joinChannel} method is different from the uid that
          * you pass for generating the token.
          */
         CONNECTION_CHANGED_REASON_TYPE[CONNECTION_CHANGED_REASON_TYPE["CONNECTION_CHANGED_INVALID_TOKEN"] = 8] = "CONNECTION_CHANGED_INVALID_TOKEN";
@@ -3528,7 +3531,7 @@ var AgoraRtcEngine;
         CONNECTION_CHANGED_REASON_TYPE[CONNECTION_CHANGED_REASON_TYPE["CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED"] = 13] = "CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED";
         /**
          * 14: Timeout for the keep-alive of the connection between the SDK and Agora's edge server. The connection state
-         * changes to [CONNECTION_STATE_RECONNECTING]{@link agoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_RECONNECTING}.
+         * changes to [CONNECTION_STATE_RECONNECTING]{@link AgoraRtcEngine.CONNECTION_STATE_TYPE.CONNECTION_STATE_RECONNECTING}.
          */
         CONNECTION_CHANGED_REASON_TYPE[CONNECTION_CHANGED_REASON_TYPE["CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT"] = 14] = "CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT";
     })(CONNECTION_CHANGED_REASON_TYPE = AgoraRtcEngine.CONNECTION_CHANGED_REASON_TYPE || (AgoraRtcEngine.CONNECTION_CHANGED_REASON_TYPE = {}));
@@ -3718,7 +3721,7 @@ var AgoraRtcEngine;
         CHANNEL_MEDIA_RELAY_ERROR[CHANNEL_MEDIA_RELAY_ERROR["RELAY_ERROR_SERVER_ERROR_RESPONSE"] = 1] = "RELAY_ERROR_SERVER_ERROR_RESPONSE";
         /**
          * 2: No server response. You can call the
-         * [leaveChannel]{@link agoraRtcEngine.leaveChannel} method to leave the channel.
+         * [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method to leave the channel.
          */
         CHANNEL_MEDIA_RELAY_ERROR[CHANNEL_MEDIA_RELAY_ERROR["RELAY_ERROR_SERVER_NO_RESPONSE"] = 2] = "RELAY_ERROR_SERVER_NO_RESPONSE";
         /**
@@ -3744,7 +3747,7 @@ var AgoraRtcEngine;
         CHANNEL_MEDIA_RELAY_ERROR[CHANNEL_MEDIA_RELAY_ERROR["RELAY_ERROR_FAILED_PACKET_SENT_TO_DEST"] = 7] = "RELAY_ERROR_FAILED_PACKET_SENT_TO_DEST";
         /**
          * 8: The SDK disconnects from the server due to poor network
-         * connections. You can call the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method to leave the channel.
+         * connections. You can call the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method to leave the channel.
          */
         CHANNEL_MEDIA_RELAY_ERROR[CHANNEL_MEDIA_RELAY_ERROR["RELAY_ERROR_SERVER_CONNECTION_LOST"] = 8] = "RELAY_ERROR_SERVER_CONNECTION_LOST";
         /**
@@ -3853,7 +3856,7 @@ var AgoraRtcEngine;
     }());
     AgoraRtcEngine.VideoDimensions = VideoDimensions;
     /**
-     * (Recommended) The standard bitrate set in the [setVideoEncoderConfiguration]{@link agoraRtcEngine.setVideoEncoderConfiguration} method.
+     * (Recommended) The standard bitrate set in the [setVideoEncoderConfiguration]{@link AgoraRtcEngine.setVideoEncoderConfiguration} method.
      *
      * In this mode, the bitrates differ between the live interactive streaming and communication profiles:
      * - `COMMUNICATION` profile: The video bitrate is the same as the base bitrate.
@@ -3861,7 +3864,7 @@ var AgoraRtcEngine;
      */
     AgoraRtcEngine.STANDARD_BITRATE = 0;
     /**
-     * The compatible bitrate set in the [setVideoEncoderConfiguration]{@link agoraRtcEngine.setVideoEncoderConfiguration} method.
+     * The compatible bitrate set in the [setVideoEncoderConfiguration]{@link AgoraRtcEngine.setVideoEncoderConfiguration} method.
      * The bitrate remains the same regardless of the channel profile. If you choose this mode in the `LIVE_BROADCASTING` profile, the
      * video frame rate may be lower than the set value.
      */
@@ -4029,7 +4032,7 @@ var AgoraRtcEngine;
     }());
     AgoraRtcEngine.InjectStreamConfig = InjectStreamConfig;
     /**
-     * The definition of [ChannelMediaInfo]{@link agoraRtcEngine.ChannelMediaInfo}.
+     * The definition of [ChannelMediaInfo]{@link AgoraRtcEngine.ChannelMediaInfo}.
      */
     var ChannelMediaInfo = /** @class */ (function () {
         function ChannelMediaInfo(channelName, token, uid) {
@@ -4041,7 +4044,7 @@ var AgoraRtcEngine;
     }());
     AgoraRtcEngine.ChannelMediaInfo = ChannelMediaInfo;
     /**
-     * The definition of [ChannelMediaRelayConfiguration]{@link agoraRtcEngine.ChannelMediaRelayConfiguration}.
+     * The definition of [ChannelMediaRelayConfiguration]{@link AgoraRtcEngine.ChannelMediaRelayConfiguration}.
      */
     var ChannelMediaRelayConfiguration = /** @class */ (function () {
         function ChannelMediaRelayConfiguration(srcInfo, destInfos, destCount) {
@@ -4288,7 +4291,7 @@ var AgoraRtcEngine;
         METADATA_TYPE[METADATA_TYPE["VIDEO_METADATA"] = 0] = "VIDEO_METADATA";
     })(METADATA_TYPE = AgoraRtcEngine.METADATA_TYPE || (AgoraRtcEngine.METADATA_TYPE = {}));
     /**
-     * The defination of [Metadata]{@link agoraRtcEngine.Metadata}.
+     * The defination of [Metadata]{@link AgoraRtcEngine.Metadata}.
      */
     var Metadata = /** @class */ (function () {
         function Metadata(uid, size, buffer, timeStampMs) {
@@ -4356,7 +4359,7 @@ var AgoraRtcEngine;
      * resources for other operations. Once you call `release` to release the Agora engine, you cannot use any method or
      * callback in the SDK any more.
      *
-     * If you want to use the real-time communication functions again, you must call [init]{@link agoraRtcEngine.init} to initialize a
+     * If you want to use the real-time communication functions again, you must call [init]{@link AgoraRtcEngine.init} to initialize a
      * new Agora engine.
      *
      * @note If you want to reinitialize the Agora engine after releasing the current one, ensure that you wait till the
@@ -4391,13 +4394,13 @@ var AgoraRtcEngine;
      *
      * @warning
      * - To ensure the quality of real-time communication, we recommend that all users in a channel use the same channel profile.
-     * - Call this method before calling [joinChannel]{@link agoraRtcEngine.joinChannel} . You cannot set the channel profile once you have
+     * - Call this method before calling [joinChannel]{@link AgoraRtcEngine.joinChannel} . You cannot set the channel profile once you have
      * joined the channel.
      * - The default audio route and video encoding bitrate are different in different channel profiles. For details, see
-     * [setDefaultAudioRouteToSpeakerphone]{@link agoraRtcEngine.setDefaultAudioRouteToSpeakerphone} and
-     * [setVideoEncoderConfiguration]{@link agoraRtcEngine.setVideoEncoderConfiguration}.
+     * [setDefaultAudioRouteToSpeakerphone]{@link AgoraRtcEngine.setDefaultAudioRouteToSpeakerphone} and
+     * [setVideoEncoderConfiguration]{@link AgoraRtcEngine.setVideoEncoderConfiguration}.
      *
-     * @param profile The channel profile of the Agora engine. See [CHANNEL_PROFILE_TYPE]{@link agoraRtcEngine.CHANNEL_PROFILE_TYPE}.
+     * @param profile The channel profile of the Agora engine. See [CHANNEL_PROFILE_TYPE]{@link AgoraRtcEngine.CHANNEL_PROFILE_TYPE}.
      *
      * @return
      * - 0(`ERR_OK`): Success.
@@ -4425,9 +4428,9 @@ var AgoraRtcEngine;
      * Users in the same channel can talk to each other, and multiple users in the same channel can start a group chat. Users with
      * different App IDs cannot call each other.
      *
-     * You must call the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method to exit the current call before entering another channel.
+     * You must call the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method to exit the current call before entering another channel.
      *
-     * A successful [joinChannel]{@link agoraRtcEngine.joinChannel} method call triggers the following callbacks:
+     * A successful [joinChannel]{@link AgoraRtcEngine.joinChannel} method call triggers the following callbacks:
      * - The local client: [onJoinChannelSuccess]{@link AgoraRtcEvents.onJoinChannelSuccess}
      * - The remote client: [onUserJoined]{@link AgoraRtcEvents.onUserJoined} , if the user joining the channel is in the `COMMUNICATION`
      * profile, or is a host in the `LIVE_BROADCASTING` profile.
@@ -4439,14 +4442,14 @@ var AgoraRtcEngine;
      * @note A channel does not accept duplicate uids, such as two users with the same `uid`. If you set `uid` as 0, the system
      * automatically assigns a `uid`. If you want to join a channel from different devices, ensure that each device has a different uid.
      *
-     * @warning Ensure that the App ID used for creating the token is the same App ID used by the [init]{@link agoraRtcEngine.init} method for
+     * @warning Ensure that the App ID used for creating the token is the same App ID used by the [init]{@link AgoraRtcEngine.init} method for
      * initializing the Agora engine. Otherwise, the CDN live streaming may fail.
      *
      * @param token The token for authentication:
      * - In situations not requiring high security: You can use the temporary token generated at Console. For details, see
-     * [Get a temporary token](https://docs.agoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#get-a-temporary-token).
+     * [Get a temporary token](https://docs.AgoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#get-a-temporary-token).
      * - In situations requiring high security: Set it as the token generated at your server. For details, see
-     * [Get a token](https://docs.agoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#generatetoken).
+     * [Get a token](https://docs.AgoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#generatetoken).
      * @param channelId The unique channel name for the Agora RTC session in the string format smaller than 64 bytes.
      * Supported characters:
      * - All lowercase English letters: a to z.
@@ -4491,9 +4494,9 @@ var AgoraRtcEngine;
      *
      * @param token The token for authentication:
      * - In situations not requiring high security: You can use the temporary token generated at Console. For details, see
-     * [Get a temporary token](https://docs.agoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#get-a-temporary-token).
+     * [Get a temporary token](https://docs.AgoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#get-a-temporary-token).
      * - In situations requiring high security: Set it as the token generated at your server. For details, see
-     * [Get a token](https://docs.agoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#generatetoken).
+     * [Get a token](https://docs.AgoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#generatetoken).
      * @param channelId The unique channel name for the Agora RTC session in the string format smaller than 64 bytes.
      * Supported characters:
      * - All lowercase English letters: a to z.
@@ -4526,17 +4529,17 @@ var AgoraRtcEngine;
      *
      * This method call is asynchronous, and the user has not left the channel when the method call returns. Once the user leaves the
      * channel, the SDK triggers the [onLeaveChannel]{@link AgoraRtcEvents.onLeaveChannel} callback. A successful
-     * [leaveChannel]{@link agoraRtcEngine.leaveChannel} method call triggers the following callbacks:
+     * [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method call triggers the following callbacks:
      * - The local client: [onLeaveChannel]{@link AgoraRtcEvents.onLeaveChannel}.
      * - The remote client: [onUserOffline]{@link AgoraRtcEvents.onUserOffline}, if the user leaving the channel is in the
      * `COMMUNICATION` channel, or is a host in the `LIVE_BROADCASTING` profile.
      *
      * **Note**
      *
-     * - If you call the [release]{@link agoraRtcEngine.release} method immediately after the `leaveChannel` method, the `leaveChannel` process
+     * - If you call the [release]{@link AgoraRtcEngine.release} method immediately after the `leaveChannel` method, the `leaveChannel` process
      * interrupts, and the [onLeaveChannel]{@link AgoraRtcEvents.onLeaveChannel} callback is not triggered.
      * - If you call the `leaveChannel` method during a CDN live streaming, the SDK triggers the
-     * [removePublishStreamUrl]{@link agoraRtcEngine.removePublishStreamUrl} method.
+     * [removePublishStreamUrl]{@link AgoraRtcEngine.removePublishStreamUrl} method.
      *
      * @return - 0(ERR_OK): Success.
      * - < 0: Failure.
@@ -4582,7 +4585,7 @@ var AgoraRtcEngine;
      * To join a channel with a user account, you can choose either of the following:
      *
      * - Call the `registerLocalUserAccount` method to create a user account, and then the
-     * [joinChannelWithUserAccount]{@link agoraRtcEngine.joinChannelWithUserAccount} method to join the channel.
+     * [joinChannelWithUserAccount]{@link AgoraRtcEngine.joinChannelWithUserAccount} method to join the channel.
      * - Call the `joinChannelWithUserAccount` method to join the channel.
      *
      * The difference between the two is that for the former, the time elapsed between calling the `joinChannelWithUserAccount` method
@@ -4637,9 +4640,9 @@ var AgoraRtcEngine;
      *
      * @param token The token for authentication:
      * - In situations not requiring high security: You can use the temporary token generated at Console. For details, see
-     * [Get a temporary token](https://docs.agoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#get-a-temporary-token).
+     * [Get a temporary token](https://docs.AgoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#get-a-temporary-token).
      * - In situations requiring high security: Set it as the token generated at your server. For details, see
-     * [Get a token](https://docs.agoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#generatetoken).
+     * [Get a token](https://docs.AgoraRtcEngine.io/en/Agora%20Platform/token?platform=All%20Platforms#generatetoken).
      * @param channelId The channel name. The maximum length of this parameter is 64 bytes. Supported character scopes are:
      * - All lowercase English letters: a to z.
      * - All uppercase English letters: A to Z.
@@ -4675,7 +4678,7 @@ var AgoraRtcEngine;
      * Gets the user information by passing in the user account.
      *
      * After a remote user joins the channel, the SDK gets the user ID and user account of the remote user, caches them
-     * in [UserInfo]{@link agoraRtcEngine.UserInfo}, and triggers the
+     * in [UserInfo]{@link AgoraRtcEngine.UserInfo}, and triggers the
      * [onUserInfoUpdated]{@link AgoraRtcEvents.onUserInfoUpdated}  callback on the local client.
      *
      * After receiving the [onUserInfoUpdated]{@link AgoraRtcEvents.onUserInfoUpdated} callback, you can call this method
@@ -4683,7 +4686,7 @@ var AgoraRtcEngine;
      *
      * @param userAccount The user account of the user. Ensure that you set this parameter.
      *
-     * @return A [UserInfo]{@link agoraRtcEngine.UserInfo} interface that identifies the user.
+     * @return A [UserInfo]{@link AgoraRtcEngine.UserInfo} interface that identifies the user.
      */
     function getUserInfoByUserAccount(userAccount) {
         return callNativeMethod(API_TYPE.GET_USER_INFO_BY_USER_ACCOUNT, {
@@ -4695,7 +4698,7 @@ var AgoraRtcEngine;
      * Gets the user information by passing in the user ID.
      *
      * After a remote user joins the channel, the SDK gets the user ID and user account of the remote user,
-     * caches [UserInfo]{@link agoraRtcEngine.UserInfo}, and triggers the
+     * caches [UserInfo]{@link AgoraRtcEngine.UserInfo}, and triggers the
      * [onUserInfoUpdated]{@link AgoraRtcEvents.onUserInfoUpdated} callback on the local client.
      *
      * After receiving the [onUserInfoUpdated]{@link AgoraRtcEvents.onUserInfoUpdated} callback, you can call this method
@@ -4703,7 +4706,7 @@ var AgoraRtcEngine;
      *
      * @param uid The user ID of the remote user. Ensure that you set this parameter.
      *
-     * @return A [UserInfo]{@link agoraRtcEngine.UserInfo} interface that identifies the user.
+     * @return A [UserInfo]{@link AgoraRtcEngine.UserInfo} interface that identifies the user.
      */
     function getUserInfoByUid(uid) {
         return callNativeMethod(API_TYPE.GET_USER_INFO_BY_UID, { uid: uid });
@@ -4721,8 +4724,8 @@ var AgoraRtcEngine;
      * **Note**
      *
      * - Call this method before joining a channel.
-     * - After calling this method, call the [stopEchoTest]{@link agoraRtcEngine.stopEchoTest} method to end the test.
-     * Otherwise, the app cannot run the next echo test, or call the [joinChannel]{@link agoraRtcEngine.joinChannel} method.
+     * - After calling this method, call the [stopEchoTest]{@link AgoraRtcEngine.stopEchoTest} method to end the test.
+     * Otherwise, the app cannot run the next echo test, or call the [joinChannel]{@link AgoraRtcEngine.joinChannel} method.
      * - In the `LIVE_BROADCASTING` profile, only a host can call this method.
      *
      * @param intervalInSeconds The time interval (s) between when you speak and when the recording plays back.
@@ -4754,20 +4757,20 @@ var AgoraRtcEngine;
      *
      * Call this method either before joining a channel or during a call. If this method is called before joining a
      * channel, the call starts in the video mode. If this method is called during an audio call, the audio mode
-     * switches to the video mode. To disable the video module, call the [disableVideo]{@link agoraRtcEngine.disableVideo} method.
+     * switches to the video mode. To disable the video module, call the [disableVideo]{@link AgoraRtcEngine.disableVideo} method.
      *
-     * A successful [enableVideo]{@link agoraRtcEngine.enableVideo} method call triggers the
+     * A successful [enableVideo]{@link AgoraRtcEngine.enableVideo} method call triggers the
      * [onUserEnableVideo]{@link AgoraRtcEvents.onUserEnableVideo}(true) callback on the remote client.
      *
      * **Note**
      *
-     * - This method affects the internal engine and can be called after the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method.
+     * - This method affects the internal engine and can be called after the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method.
      * - This method resets the internal engine and takes some time to take effect. We recommend using the following
      * API methods to control the video engine modules separately:
-     *   - [enableLocalVideo]{@link agoraRtcEngine.enableLocalVideo}: Whether to enable the camera to create the local video stream.
-     *   - [muteLocalVideoStream]{@link agoraRtcEngine.muteLocalVideoStream}: Whether to publish the local video stream.
-     *   - [muteRemoteVideoStream]{@link agoraRtcEngine.muteRemoteVideoStream}: Whether to subscribe to and play the remote video stream.
-     *   - [muteAllRemoteVideoStreams]{@link agoraRtcEngine.muteAllRemoteVideoStreams}: Whether to subscribe to and play all remote video streams.
+     *   - [enableLocalVideo]{@link AgoraRtcEngine.enableLocalVideo}: Whether to enable the camera to create the local video stream.
+     *   - [muteLocalVideoStream]{@link AgoraRtcEngine.muteLocalVideoStream}: Whether to publish the local video stream.
+     *   - [muteRemoteVideoStream]{@link AgoraRtcEngine.muteRemoteVideoStream}: Whether to subscribe to and play the remote video stream.
+     *   - [muteAllRemoteVideoStreams]{@link AgoraRtcEngine.muteAllRemoteVideoStreams}: Whether to subscribe to and play all remote video streams.
      *
      * @return
      * - 0: Success.
@@ -4782,20 +4785,20 @@ var AgoraRtcEngine;
      *
      * This method can be called before joining a channel or during a call. If this method is called before joining a
      * channel, the call starts in audio mode. If this method is called during a video call, the video mode switches
-     * to the audio mode. To enable the video module, call the [enableVideo]{@link agoraRtcEngine.enableVideo} method.
+     * to the audio mode. To enable the video module, call the [enableVideo]{@link AgoraRtcEngine.enableVideo} method.
      *
-     * A successful [disableVideo]{@link agoraRtcEngine.disableVideo} method call triggers the
+     * A successful [disableVideo]{@link AgoraRtcEngine.disableVideo} method call triggers the
      * [onUserEnableVideo]{@link AgoraRtcEvents.onUserEnableVideo} (false) callback on the remote client.
      *
      * **Note**
      *
-     * - This method affects the internal engine and can be called after the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method.
+     * - This method affects the internal engine and can be called after the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method.
      * - This method resets the internal engine and takes some time to take effect. We recommend using the following API
      * methods to control the video engine modules separately:
-     *   - [enableLocalVideo]{@link agoraRtcEngine.enableLocalVideo} : Whether to enable the camera to create the local video stream.
-     *   - [muteLocalVideoStream]{@link agoraRtcEngine.muteLocalVideoStream} : Whether to publish the local video stream.
-     *   - [muteRemoteVideoStream]{@link agoraRtcEngine.muteRemoteVideoStream} : Whether to subscribe to and play the remote video stream.
-     *   - [muteAllRemoteVideoStreams]{@link agoraRtcEngine.muteAllRemoteVideoStreams} : Whether to subscribe to and play all remote video streams.
+     *   - [enableLocalVideo]{@link AgoraRtcEngine.enableLocalVideo} : Whether to enable the camera to create the local video stream.
+     *   - [muteLocalVideoStream]{@link AgoraRtcEngine.muteLocalVideoStream} : Whether to publish the local video stream.
+     *   - [muteRemoteVideoStream]{@link AgoraRtcEngine.muteRemoteVideoStream} : Whether to subscribe to and play the remote video stream.
+     *   - [muteAllRemoteVideoStreams]{@link AgoraRtcEngine.muteAllRemoteVideoStreams} : Whether to subscribe to and play all remote video streams.
      *
      * @return
      * - 0: Success.
@@ -4808,7 +4811,7 @@ var AgoraRtcEngine;
     /**
      * Sets the video profile.
      *
-     * @deprecated This method is deprecated. Use the [setVideoEncoderConfiguration]{@link agoraRtcEngine.setVideoEncoderConfiguration}
+     * @deprecated This method is deprecated. Use the [setVideoEncoderConfiguration]{@link AgoraRtcEngine.setVideoEncoderConfiguration}
      * method instead.
      *
      * Each video profile includes a set of parameters, such as the resolution, frame rate, and bitrate. If the camera
@@ -4818,11 +4821,11 @@ var AgoraRtcEngine;
      * **Note**
      *
      * - If you do not need to set the video profile after joining the channel, call this method before the
-     * [enableVideo]{@link agoraRtcEngine.enableVideo} method to reduce the render time of the first video frame.
-     * - Always set the video profile before calling the [joinChannel]{@link agoraRtcEngine.joinChannel} or
-     * [startPreview]{@link agoraRtcEngine.startPreview} method.
+     * [enableVideo]{@link AgoraRtcEngine.enableVideo} method to reduce the render time of the first video frame.
+     * - Always set the video profile before calling the [joinChannel]{@link AgoraRtcEngine.joinChannel} or
+     * [startPreview]{@link AgoraRtcEngine.startPreview} method.
      *
-     * @param profile Sets the video profile. See [VIDEO_PROFILE_TYPE]{@link agoraRtcEngine.VIDEO_PROFILE_TYPE}.
+     * @param profile Sets the video profile. See [VIDEO_PROFILE_TYPE]{@link AgoraRtcEngine.VIDEO_PROFILE_TYPE}.
      * @param swapWidthAndHeight Sets whether to swap the width and height of the video stream:
      * - true: Swap the width and height.
      * - false: (Default) Do not swap the width and height.
@@ -4853,10 +4856,10 @@ var AgoraRtcEngine;
      * further down the list are considered until a successful configuration is found.
      *
      * @note If you do not need to set the video encoder configuration after joining the channel, you can call this
-     * method before the [enableVideo]{@link agoraRtcEngine.enableVideo} method to reduce the render time of the first video frame.
+     * method before the [enableVideo]{@link AgoraRtcEngine.enableVideo} method to reduce the render time of the first video frame.
      *
      * @param config Sets the local video encoder configuration. See
-     * [VideoEncoderConfiguration]{@link agoraRtcEngine.VideoEncoderConfiguration}.
+     * [VideoEncoderConfiguration]{@link AgoraRtcEngine.VideoEncoderConfiguration}.
      *
      * @return
      * - 0: Success.
@@ -4875,7 +4878,7 @@ var AgoraRtcEngine;
      * parameters. When the default camera capturer settings do not meet special requirements or cause performance
      * problems, we recommend using this method to set the camera capturer configuration:
      * - If the resolution or frame rate of the captured raw video data are higher than those set by
-     * [setVideoEncoderConfiguration]{@link agoraRtcEngine.setVideoEncoderConfiguration}, processing video frames requires
+     * [setVideoEncoderConfiguration]{@link AgoraRtcEngine.setVideoEncoderConfiguration}, processing video frames requires
      * extra CPU and RAM usage and degrades performance. We recommend setting `config` as
      * `CAPTURER_OUTPUT_PREFERENCE_PERFORMANCE(1)` to avoid such problems.
      * - If you do not need local video preview or are willing to sacrifice preview quality, we recommend setting
@@ -4884,11 +4887,11 @@ var AgoraRtcEngine;
      * `CAPTURER_OUTPUT_PREFERENCE_PREVIEW(2)`.
      *
      * @note Call this method before enabling the local camera. That said, you can call this method before calling
-     * [joinChannel]{@link agoraRtcEngine.joinChannel}, [enableVideo]{@link agoraRtcEngine.enableVideo}, or
-     * [enableLocalVideo]{@link agoraRtcEngine.enableLocalVideo}, depending on which method you use to turn on your local camera.
+     * [joinChannel]{@link AgoraRtcEngine.joinChannel}, [enableVideo]{@link AgoraRtcEngine.enableVideo}, or
+     * [enableLocalVideo]{@link AgoraRtcEngine.enableLocalVideo}, depending on which method you use to turn on your local camera.
      *
      * @param config Sets the camera capturer configuration. See
-     * [CameraCapturerConfiguration]{@link agoraRtcEngine.CameraCapturerConfiguration}.
+     * [CameraCapturerConfiguration]{@link AgoraRtcEngine.CameraCapturerConfiguration}.
      *
      * @return
      * - 0: Success.
@@ -4900,15 +4903,21 @@ var AgoraRtcEngine;
         });
     }
     AgoraRtcEngine.setCameraCapturerConfiguration = setCameraCapturerConfiguration;
-    // @ts-ignore
     /**
      * TODO
      *
      * @param canvas
      */
     function setupLocalVideo(canvas) {
+        var yuvCanvas = YUVCanvas.attach(canvas, { webGL: true });
         // @ts-ignore
-        require('./yuv/yuv-canvas').attach(canvas, { webGL: true });
+        var buffer = window.bufferMap[0];
+        var format = YUVBuffer.format({
+            width: buffer.width,
+            height: buffer.height,
+        });
+        var frame = YUVBuffer.frame(format, { bytes: buffer.yBuffer, stride: buffer.yStride }, { bytes: buffer.uBuffer, stride: buffer.uStride }, { bytes: buffer.vBuffer, stride: buffer.vStride });
+        yuvCanvas.drawFrame(frame);
     }
     AgoraRtcEngine.setupLocalVideo = setupLocalVideo;
     /**
@@ -4918,18 +4927,25 @@ var AgoraRtcEngine;
      * @param uid
      */
     function setupRemoteVideo(canvas, uid) {
+        var yuvCanvas = YUVCanvas.attach(canvas, { webGL: true });
         // @ts-ignore
-        require('./yuv/yuv-canvas').attach(canvas, { webGL: true, uid: uid });
+        var buffer = window.bufferMap[uid];
+        var format = YUVBuffer.format({
+            width: buffer.width,
+            height: buffer.height,
+        });
+        var frame = YUVBuffer.frame(format, { bytes: buffer.yBuffer, stride: buffer.yStride }, { bytes: buffer.uBuffer, stride: buffer.uStride }, { bytes: buffer.vBuffer, stride: buffer.vStride });
+        yuvCanvas.drawFrame(frame);
     }
     AgoraRtcEngine.setupRemoteVideo = setupRemoteVideo;
     /**
      * Starts the local video preview before joining the channel.
      *
-     * Before calling this method, you must call the [enableVideo]{@link agoraRtcEngine.enableVideo} method to enable video.
+     * Before calling this method, you must call the [enableVideo]{@link AgoraRtcEngine.enableVideo} method to enable video.
      *
      * @note Once the `startPreview` method is called to start the local video preview, if you leave the channel by
-     * calling the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method, the local video preview remains until you call
-     * the [stopPreview]{@link agoraRtcEngine.stopPreview} method to disable it.
+     * calling the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method, the local video preview remains until you call
+     * the [stopPreview]{@link AgoraRtcEngine.stopPreview} method to disable it.
      *
      * @return
      * - 0: Success.
@@ -4942,14 +4958,14 @@ var AgoraRtcEngine;
     /**
      * Prioritizes a remote user's stream.
      *
-     * Use this method with the [setRemoteSubscribeFallbackOption]{@link agoraRtcEngine.setRemoteSubscribeFallbackOption} method.
+     * Use this method with the [setRemoteSubscribeFallbackOption]{@link AgoraRtcEngine.setRemoteSubscribeFallbackOption} method.
      * If the fallback function is enabled for a subscribed stream, the SDK ensures the high-priority user gets the
      * best possible stream quality.
      *
      * @note The Agora SDK supports setting `userPriority` as `PRIORITY_HIGH` for one user only.
      *
      * @param uid The ID of the remote user.
-     * @param userPriority Sets the priority of the remote user. See [PRIORITY_TYPE]{@link agoraRtcEngine.PRIORITY_TYPE}.
+     * @param userPriority Sets the priority of the remote user. See [PRIORITY_TYPE]{@link AgoraRtcEngine.PRIORITY_TYPE}.
      *
      * @return
      * - 0: Success.
@@ -4980,14 +4996,14 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * - This method affects the internal engine and can be called after the [leaveChannel]{@link agoraRtcEngine.leaveChannel}
+     * - This method affects the internal engine and can be called after the [leaveChannel]{@link AgoraRtcEngine.leaveChannel}
      * method. You can call this method either before or after joining a channel.
      * - This method resets the internal engine and takes some time to take effect. We recommend using the following
      * API methods to control the audio engine modules separately:
-     *   - [enableLocalAudio]{@link agoraRtcEngine.enableLocalAudio}: Whether to enable the microphone to create the local audio stream.
-     *   - [muteLocalAudioStream]{@link agoraRtcEngine.muteLocalAudioStream}: Whether to publish the local audio stream.
-     *   - [muteRemoteAudioStream]{@link agoraRtcEngine.muteRemoteAudioStream}: Whether to subscribe to and play the remote audio stream.
-     *   - [muteAllRemoteAudioStreams]{@link agoraRtcEngine.muteAllRemoteAudioStreams}: Whether to subscribe to and play all remote audio streams.
+     *   - [enableLocalAudio]{@link AgoraRtcEngine.enableLocalAudio}: Whether to enable the microphone to create the local audio stream.
+     *   - [muteLocalAudioStream]{@link AgoraRtcEngine.muteLocalAudioStream}: Whether to publish the local audio stream.
+     *   - [muteRemoteAudioStream]{@link AgoraRtcEngine.muteRemoteAudioStream}: Whether to subscribe to and play the remote audio stream.
+     *   - [muteAllRemoteAudioStreams]{@link AgoraRtcEngine.muteAllRemoteAudioStreams}: Whether to subscribe to and play all remote audio streams.
      *
      * @return
      * - 0: Success.
@@ -5013,11 +5029,11 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * This method is different from the [muteLocalAudioStream]{@link agoraRtcEngine.muteLocalAudioStream} method:
+     * This method is different from the [muteLocalAudioStream]{@link AgoraRtcEngine.muteLocalAudioStream} method:
      *   - `enableLocalAudio: Disables/Re-enables the local audio capturing and processing. If you disable or re-enable
      * local audio recording using the `enableLocalAudio` method, the local user may hear a pause in the remote audio
      * playback.
-     *   - [muteLocalAudioStream]{@link agoraRtcEngine.muteLocalAudioStream}: Sends/Stops sending the local audio streams.
+     *   - [muteLocalAudioStream]{@link AgoraRtcEngine.muteLocalAudioStream}: Sends/Stops sending the local audio streams.
      *
      * @param enabled Sets whether to disable/re-enable the local audio function:
      * - true: (Default) Re-enable the local audio function, that is, to start the local audio capturing device
@@ -5037,10 +5053,10 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * - This method affects the internal engine and can be called after the [leaveChannel]{@link agoraRtcEngine.leaveChannel}
+     * - This method affects the internal engine and can be called after the [leaveChannel]{@link AgoraRtcEngine.leaveChannel}
      * method. You can call this method either before or after joining a channel.
      * - This method resets the internal engine and takes some time to take effect. We recommend using the
-     * [enableLocalAudio]{@link agoraRtcEngine.enableLocalAudio} and [muteLocalAudioStream]{@link agoraRtcEngine.muteLocalAudioStream}
+     * [enableLocalAudio]{@link AgoraRtcEngine.enableLocalAudio} and [muteLocalAudioStream]{@link AgoraRtcEngine.muteLocalAudioStream}
      * methods to capture, process, and send the local audio streams.
      *
      * @return
@@ -5056,18 +5072,18 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * - The `setAudioProfile` method must be called before the [joinChannel]{@link agoraRtcEngine.joinChannel} method.
+     * - The `setAudioProfile` method must be called before the [joinChannel]{@link AgoraRtcEngine.joinChannel} method.
      * - In the `COMMUNICATION` and `LIVE_BROADCASTING` profiles, the bitrate may be different from your settings due
      * to network self-adaptation.
      * - In scenarios requiring high-quality audio, for example, a music teaching scenario, we recommend setting
      * `profile` as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4)` and `scenario` as `AUDIO_SCENARIO_GAME_STREAMING(3)`.
      *
      * @param  profile Sets the sample rate, bitrate, encoding mode, and the number of channels. See
-     * [AUDIO_PROFILE_TYPE]{@link agoraRtcEngine.AUDIO_PROFILE_TYPE}.
-     * @param  scenario Sets the audio application scenario. See [AUDIO_SCENARIO_TYPE]{@link agoraRtcEngine.AUDIO_SCENARIO_TYPE}.
+     * [AUDIO_PROFILE_TYPE]{@link AgoraRtcEngine.AUDIO_PROFILE_TYPE}.
+     * @param  scenario Sets the audio application scenario. See [AUDIO_SCENARIO_TYPE]{@link AgoraRtcEngine.AUDIO_SCENARIO_TYPE}.
      * Under different audio scenarios, the device uses different volume tracks, i.e. either the in-call volume or
      * the media volume. For details, see
-     * [What is the difference between the in-call volume and the media volume?](https://docs.agoraRtcEngine.io/en/faq/system_volume).
+     * [What is the difference between the in-call volume and the media volume?](https://docs.AgoraRtcEngine.io/en/faq/system_volume).
      *
      * @return
      * - 0: Success.
@@ -5086,7 +5102,7 @@ var AgoraRtcEngine;
      * **Note**
      *
      * - When `mute` is set as `true`, this method does not disable the microphone, which does not affect any ongoing recording.
-     * - If you call [setChannelProfile]{@link agoraRtcEngine.setChannelProfile} after this method, the SDK resets whether or not to mute
+     * - If you call [setChannelProfile]{@link AgoraRtcEngine.setChannelProfile} after this method, the SDK resets whether or not to mute
      * the local audio according to the channel profile and user role. Therefore, we recommend calling this method after the
      * `setChannelProfile` method.
      *
@@ -5123,7 +5139,7 @@ var AgoraRtcEngine;
      * You can call this method either before or after joining a channel. If you call `setDefaultMuteAllRemoteAudioStreams (true)`
      * after joining a channel, the remote audio streams of all subsequent users are not received.
      *
-     * @note If you want to resume receiving the audio stream, call [muteRemoteAudioStream(false)]{@link agoraRtcEngine.muteRemoteAudioStream},
+     * @note If you want to resume receiving the audio stream, call [muteRemoteAudioStream(false)]{@link AgoraRtcEngine.muteRemoteAudioStream},
      * and specify the ID of the remote user whose audio stream you want to receive. To receive the audio streams of multiple remote
      * users, call `muteRemoteAudioStream(false)` as many times. Calling `setDefaultMuteAllRemoteAudioStreams (false)` resumes
      * receiving the audio streams of subsequent users only.
@@ -5172,7 +5188,7 @@ var AgoraRtcEngine;
     /**
      * Stops/Resumes receiving a specified remote user's audio stream.
      *
-     * @note If you called the [muteAllRemoteAudioStreams]{@link agoraRtcEngine.muteAllRemoteAudioStreams} method and set `mute`
+     * @note If you called the [muteAllRemoteAudioStreams]{@link AgoraRtcEngine.muteAllRemoteAudioStreams} method and set `mute`
      * as `true` to stop receiving all remote users' audio streams, call the `muteAllRemoteAudioStreams` method and set
      * `mute` as `false` before calling this method. The `muteAllRemoteAudioStreams` method sets all remote audio
      * streams, while the `muteAllRemoteAudioStreams` method sets a specified remote audio stream.
@@ -5202,9 +5218,9 @@ var AgoraRtcEngine;
      * **Note**
      *
      * - When set to `true`, this method does not disable the camera which does not affect the retrieval of the local
-     * video streams. This method executes faster than the [enableLocalVideo]{@link agoraRtcEngine.enableLocalVideo} method
+     * video streams. This method executes faster than the [enableLocalVideo]{@link AgoraRtcEngine.enableLocalVideo} method
      * which controls the sending of the local video stream.
-     * - If you call [setChannelProfile]{@link agoraRtcEngine.setChannelProfile} after this method, the SDK resets whether or
+     * - If you call [setChannelProfile]{@link AgoraRtcEngine.setChannelProfile} after this method, the SDK resets whether or
      * not to mute the local video according to the channel profile and user role. Therefore, we recommend calling
      * this method after the `setChannelProfile` method.
      *
@@ -5225,14 +5241,14 @@ var AgoraRtcEngine;
      *
      * This method disables or re-enables the local video capturer, and does not affect receiving the remote video stream.
      *
-     * After you call the [enableVideo]{@link agoraRtcEngine.enableVideo} method, the local video capturer is enabled by default.
+     * After you call the [enableVideo]{@link AgoraRtcEngine.enableVideo} method, the local video capturer is enabled by default.
      * You can call `enableLocalVideo(false)` to disable the local video capturer. If you want to re-enable it, call
      * `[enableLocalVideo(true)`.
      *
      * After the local video capturer is successfully disabled or re-enabled, the SDK triggers the
      * [onUserEnableLocalVideo]{@link AgoraRtcEvents.onUserEnableLocalVideo} callback on the remote client.
      *
-     * @note This method affects the internal engine and can be called after the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method.
+     * @note This method affects the internal engine and can be called after the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method.
      *
      * @param enabled Sets whether to disable/re-enable the local video, including the capturer, renderer, and sender:
      * - true: (Default) Re-enable the local video.
@@ -5268,7 +5284,7 @@ var AgoraRtcEngine;
      * You can call this method either before or after joining a channel. If you call `setDefaultMuteAllRemoteVideoStreams (true)`
      * after joining a channel, the remote video streams of all subsequent users are not received.
      *
-     * @note If you want to resume receiving the video stream, call [muteRemoteVideoStream(false)]{@link agoraRtcEngine.muteRemoteVideoStream},
+     * @note If you want to resume receiving the video stream, call [muteRemoteVideoStream(false)]{@link AgoraRtcEngine.muteRemoteVideoStream},
      * and specify the ID of the remote user whose video stream you want to receive. To receive the video streams of multiple
      * remote users, call `muteRemoteVideoStream(false)` as many times. Calling `setDefaultMuteAllRemoteVideoStreams(false)`
      * resumes receiving the video streams of subsequent users only.
@@ -5288,7 +5304,7 @@ var AgoraRtcEngine;
     /**
      * Stops/Resumes receiving the video stream from a specified remote user.
      *
-     * @note If you called the [muteAllRemoteVideoStreams]{@link agoraRtcEngine.muteAllRemoteVideoStreams} method and set `mute`
+     * @note If you called the [muteAllRemoteVideoStreams]{@link AgoraRtcEngine.muteAllRemoteVideoStreams} method and set `mute`
      * as `true` to stop receiving all remote video streams, call the `muteAllRemoteVideoStreams` method and set `mute`
      * as `false` before calling this method.
      *
@@ -5325,7 +5341,7 @@ var AgoraRtcEngine;
      * The method result returns in the [onApiCallExecuted]{@link AgoraRtcEvents.onApiCallExecuted} callback.
      *
      * @param userId ID of the remote user sending the video stream.
-     * @param streamType  Sets the video-stream type. See [REMOTE_VIDEO_STREAM_TYPE]{@link agoraRtcEngine.REMOTE_VIDEO_STREAM_TYPE}.
+     * @param streamType  Sets the video-stream type. See [REMOTE_VIDEO_STREAM_TYPE]{@link AgoraRtcEngine.REMOTE_VIDEO_STREAM_TYPE}.
      *
      * @return
      * - 0: Success.
@@ -5354,7 +5370,7 @@ var AgoraRtcEngine;
      *
      * The method result returns in the [onApiCallExecuted]{@link AgoraRtcEvents.onApiCallExecuted} callback.
      *
-     * @param streamType Sets the default video-stream type. See [REMOTE_VIDEO_STREAM_TYPE]{@link agoraRtcEngine.REMOTE_VIDEO_STREAM_TYPE}.
+     * @param streamType Sets the default video-stream type. See [REMOTE_VIDEO_STREAM_TYPE]{@link AgoraRtcEngine.REMOTE_VIDEO_STREAM_TYPE}.
      *
      * @return
      * - 0: Success.
@@ -5414,14 +5430,14 @@ var AgoraRtcEngine;
      * - This method is usually called after the `joinChannel` method. The recording automatically stops when you call
      * the `leaveChannel` method.
      * - For better recording effects, set quality as
-     * [AUDIO_RECORDING_QUALITY_MEDIUM]{@link agoraRtcEngine.AUDIO_RECORDING_QUALITY_TYPE.AUDIO_RECORDING_QUALITY_MEDIUM} or
-     * [AUDIO_RECORDING_QUALITY_HIGH]{@link agoraRtcEngine.AUDIO_RECORDING_QUALITY_TYPE.AUDIO_RECORDING_QUALITY_HIGH} when
+     * [AUDIO_RECORDING_QUALITY_MEDIUM]{@link AgoraRtcEngine.AUDIO_RECORDING_QUALITY_TYPE.AUDIO_RECORDING_QUALITY_MEDIUM} or
+     * [AUDIO_RECORDING_QUALITY_HIGH]{@link AgoraRtcEngine.AUDIO_RECORDING_QUALITY_TYPE.AUDIO_RECORDING_QUALITY_HIGH} when
      * `sampleRate` is 44.1 kHz or 48 kHz.
      *
      * @param filePath The absolute file path of the recording file. The string of the file name is in UTF-8, such as
      * /dir1/dir2/dir3/audio.aac.
      * @param quality Sets the audio recording quality. See
-     * [AUDIO_RECORDING_QUALITY_TYPE]{@link agoraRtcEngine.AUDIO_RECORDING_QUALITY_TYPE}.
+     * [AUDIO_RECORDING_QUALITY_TYPE]{@link AgoraRtcEngine.AUDIO_RECORDING_QUALITY_TYPE}.
      * @param sampleRate Sample rate (Hz) of the recording file. Supported values are as follows:
      * - 16000
      * - (Default) 32000
@@ -5449,7 +5465,7 @@ var AgoraRtcEngine;
     /**
      * Stops an audio recording on the client.
      *
-     * You can call this method before calling the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method else, the
+     * You can call this method before calling the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method else, the
      * recording automatically stops when the `leaveChannel` method is called.
      *
      * @return
@@ -5587,7 +5603,7 @@ var AgoraRtcEngine;
      * Call this method when you are in a channel.
      *
      * @note Calling this method does not affect the volume of audio effect file playback invoked by the
-     * [playEffect]{@link agoraRtcEngine.playEffect} method.
+     * [playEffect]{@link AgoraRtcEngine.playEffect} method.
      *
      * @param volume Audio mixing volume. The value ranges between 0 and 100 (default).
      *
@@ -5703,7 +5719,7 @@ var AgoraRtcEngine;
      *
      * When a local music file is mixed with a local human voice, call this method to set the pitch of the local music file only.
      *
-     * @note Call this method after calling [startAudioMixing]{@link agoraRtcEngine.startAudioMixing}.
+     * @note Call this method after calling [startAudioMixing]{@link AgoraRtcEngine.startAudioMixing}.
      *
      * @param pitch Sets the pitch of the local music file by chromatic scale. The default value is 0,
      * which means keeping the original pitch. The value ranges from -12 to 12, and the pitch value between
@@ -5791,7 +5807,7 @@ var AgoraRtcEngine;
      *
      * @param soundId ID of the specified audio effect. Each audio effect has a unique ID.
      *
-     * @note If the audio effect is preloaded into the memory through the [preloadEffect]{@link agoraRtcEngine.preloadEffect}
+     * @note If the audio effect is preloaded into the memory through the [preloadEffect]{@link AgoraRtcEngine.preloadEffect}
      * method, the value of `soundID` must be the same as that in the `preloadEffect` method.
      * @param filePath Specifies the absolute path (including the suffixes of the filename) to the local audio effect
      * file or the URL of the online audio effect file, for example, c:/music/audio.mp4. Supported audio formats: mp3,
@@ -5799,8 +5815,8 @@ var AgoraRtcEngine;
      * @param loopCount Sets the number of times the audio effect loops:
      * - 0: Play the audio effect once.
      * - 1: Play the audio effect twice.
-     * - -1: Play the audio effect in an indefinite loop until the [stopEffect]{@link agoraRtcEngine.stopEffect} or
-     * [stopAllEffects]{@link agoraRtcEngine.stopAllEffects} method is called.
+     * - -1: Play the audio effect in an indefinite loop until the [stopEffect]{@link AgoraRtcEngine.stopEffect} or
+     * [stopAllEffects]{@link AgoraRtcEngine.stopAllEffects} method is called.
      * @param pitch Sets the pitch of the audio effect. The value ranges between 0.5 and 2. The default value is 1
      * (no change to the pitch). The lower the value, the lower the pitch.
      * @param pan Sets the spatial position of the audio effect. The value ranges between -1.0 and 1.0:
@@ -5859,7 +5875,7 @@ var AgoraRtcEngine;
      * Preloads a specified audio effect file into the memory.
      *
      * To ensure smooth communication, limit the size of the audio effect file. We recommend using this method to
-     * preload the audio effect before calling the [joinChannel]{@link agoraRtcEngine.joinChannel} method.
+     * preload the audio effect before calling the [joinChannel]{@link AgoraRtcEngine.joinChannel} method.
      * Supported audio formats: mp3, aac, m4a, 3gp, and wav.
      *
      * @note This method does not support online audio effect files.
@@ -5948,9 +5964,9 @@ var AgoraRtcEngine;
     /**
      * Enables/Disables stereo panning for remote users.
      *
-     * Ensure that you call this method before [joinChannel]{@link agoraRtcEngine.joinChannel} to enable stereo panning for
+     * Ensure that you call this method before [joinChannel]{@link AgoraRtcEngine.joinChannel} to enable stereo panning for
      * remote users so that the local user can track the position of a remote user by calling
-     * [setRemoteVoicePosition]{@link agoraRtcEngine.setRemoteVoicePosition}.
+     * [setRemoteVoicePosition]{@link AgoraRtcEngine.setRemoteVoicePosition}.
      *
      * @param enabled Sets whether or not to enable stereo panning for remote users:
      * - true: enables stereo panning.
@@ -5974,7 +5990,7 @@ var AgoraRtcEngine;
      * **Note**
      *
      * - For this method to work, enable stereo panning for remote users by calling the
-     * [enableSoundPositionIndication]{@link agoraRtcEngine.enableSoundPositionIndication} method before joining a channel.
+     * [enableSoundPositionIndication]{@link AgoraRtcEngine.enableSoundPositionIndication} method before joining a channel.
      * - This method requires hardware support. For the best sound positioning, we recommend using a stereo speaker.
      *
      * @param uid The ID of the remote user.
@@ -6016,7 +6032,7 @@ var AgoraRtcEngine;
      *
      * @param bandFrequency Sets the band frequency. The value ranges between 0 and 9, representing the respective
      * 10-band center frequencies of the voice effects, including 31, 62, 125, 250, 500, 1k, 2k, 4k, 8k, and 16k Hz. See
-     * [AUDIO_EQUALIZATION_BAND_FREQUENCY]{@link agoraRtcEngine.AUDIO_EQUALIZATION_BAND_FREQUENCY}.
+     * [AUDIO_EQUALIZATION_BAND_FREQUENCY]{@link AgoraRtcEngine.AUDIO_EQUALIZATION_BAND_FREQUENCY}.
      * @param bandGain Sets the gain of each band in dB. The value ranges between -15 and 15.
      *
      * @return
@@ -6033,10 +6049,10 @@ var AgoraRtcEngine;
     /**
      * Sets the local voice reverberation.
      *
-     * You can also use [setLocalVoiceReverbPreset]{@link agoraRtcEngine.setLocalVoiceReverbPreset} to use the preset reverberation effect,
+     * You can also use [setLocalVoiceReverbPreset]{@link AgoraRtcEngine.setLocalVoiceReverbPreset} to use the preset reverberation effect,
      * such as pop music, R&B or rock music effects.
      *
-     * @param reverbKey Sets the reverberation key. See [AUDIO_REVERB_TYPE]{@link agoraRtcEngine.AUDIO_REVERB_TYPE}.
+     * @param reverbKey Sets the reverberation key. See [AUDIO_REVERB_TYPE]{@link AgoraRtcEngine.AUDIO_REVERB_TYPE}.
      * @param value Sets the value of the reverberation key.
      *
      * @return
@@ -6066,15 +6082,15 @@ var AgoraRtcEngine;
      * **Note**
      *
      * - To achieve better voice effect quality, Agora recommends setting the profile parameter in
-     * [setAudioProfile]{@link agoraRtcEngine.setAudioProfile} as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4)` or
+     * [setAudioProfile]{@link AgoraRtcEngine.setAudioProfile} as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4)` or
      * `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)`.
      * - This method works best with the human voice, and Agora does not recommend using it for audio containing music
      * and a human voice.
-     * - Do not use this method with [setLocalVoiceReverbPreset]{@link agoraRtcEngine.setLocalVoiceReverbPreset}, because the
+     * - Do not use this method with [setLocalVoiceReverbPreset]{@link AgoraRtcEngine.setLocalVoiceReverbPreset}, because the
      * method called later overrides the one called earlier.
      *
      * @param voiceChanger Sets the local voice changer option. The default value is `VOICE_CHANGER_OFF`, which means
-     * the original voice. See details in [VOICE_CHANGER_PRESET]{@link agoraRtcEngine.VOICE_CHANGER_PRESET}.
+     * the original voice. See details in [VOICE_CHANGER_PRESET]{@link AgoraRtcEngine.VOICE_CHANGER_PRESET}.
      * Gender-based beatification effect works best only when assigned a proper gender:
      * - For a male-sounding voice: `GENERAL_BEAUTY_VOICE_MALE_MAGNETIC`.
      * - For a female-sounding voice: `GENERAL_BEAUTY_VOICE_FEMALE_FRESH` or `GENERAL_BEAUTY_VOICE_FEMALE_VITALITY`.
@@ -6098,18 +6114,18 @@ var AgoraRtcEngine;
      * **Note**
      *
      * - When calling this method with enumerations that begin with `AUDIO_REVERB_FX`, ensure that you set profile in
-     * [setAudioProfile]{@link agoraRtcEngine.setAudioProfile} as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4)` or
+     * [setAudioProfile]{@link AgoraRtcEngine.setAudioProfile} as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4)` or
      * `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)`; otherwise, this methods cannot set the corresponding voice
      * reverberation option.
      * - When calling this method with `AUDIO_VIRTUAL_STEREO`, Agora recommends setting the `profile` parameter in
      * `setAudioProfile` as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)`.
      * - This method works best with the human voice, and Agora does not recommend using it for audio containing music
      * and a human voice.
-     * - Do not use this method with [setLocalVoiceChanger]{@link agoraRtcEngine.setLocalVoiceChanger}, because the method
+     * - Do not use this method with [setLocalVoiceChanger]{@link AgoraRtcEngine.setLocalVoiceChanger}, because the method
      * called later overrides the one called earlier.
      *
      * @param reverbPreset The local voice reverberation option. The default value is `AUDIO_REVERB_OFF`,
-     * which means the original voice.  See [AUDIO_REVERB_PRESET]{@link agoraRtcEngine.AUDIO_REVERB_PRESET}.
+     * which means the original voice.  See [AUDIO_REVERB_PRESET]{@link AgoraRtcEngine.AUDIO_REVERB_PRESET}.
      * To achieve better voice effects, Agora recommends the enumeration whose name begins with `AUDIO_REVERB_FX`.
      *
      * @return
@@ -6159,7 +6175,7 @@ var AgoraRtcEngine;
      * full, the SDK deletes the log file with the earliest modification time among the other four, renames
      * `agorasdk.log` to the name of the deleted log file, and create a new `agorasdk.log` to record latest logs.
      *
-     * @note Ensure that you call this method immediately after calling [init]{@link agoraRtcEngine.init}, otherwise the output
+     * @note Ensure that you call this method immediately after calling [init]{@link AgoraRtcEngine.init}, otherwise the output
      * logs may not be complete.
      *
      * @param filePath The absolute path of log files. The default file path is as follows:
@@ -6184,7 +6200,7 @@ var AgoraRtcEngine;
      *
      * If you set the log level to `WARNING`, you see the logs within levels `CRITICAL`, `ERROR`, and `WARNING`.
      *
-     * @param filter Sets the log filter level. See [LOG_FILTER_TYPE]{@link agoraRtcEngine.LOG_FILTER_TYPE}.
+     * @param filter Sets the log filter level. See [LOG_FILTER_TYPE]{@link AgoraRtcEngine.LOG_FILTER_TYPE}.
      *
      * @return
      * - 0: Success.
@@ -6225,13 +6241,13 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * - Ensure that you have called the [setupLocalVideo]{@link agoraRtcEngine.setupLocalVideo} method to initialize the local
+     * - Ensure that you have called the [setupLocalVideo]{@link AgoraRtcEngine.setupLocalVideo} method to initialize the local
      * video view before calling this method.
      * - During a call, you can call this method as many times as necessary to update the display mode of the local
      * video view.
      *
-     * @param renderMode The rendering mode of the local video view. See [RENDER_MODE_TYPE]{@link agoraRtcEngine.RENDER_MODE_TYPE}.
-     * @param mirrorMode The mirror mode of the local video view. See [VIDEO_MIRROR_MODE_TYPE]{@link agoraRtcEngine.VIDEO_MIRROR_MODE_TYPE}.
+     * @param renderMode The rendering mode of the local video view. See [RENDER_MODE_TYPE]{@link AgoraRtcEngine.RENDER_MODE_TYPE}.
+     * @param mirrorMode The mirror mode of the local video view. See [VIDEO_MIRROR_MODE_TYPE]{@link AgoraRtcEngine.VIDEO_MIRROR_MODE_TYPE}.
      *
      * **Note**
      *
@@ -6261,14 +6277,14 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * - Ensure that you have called the [setupRemoteVideo]{@link agoraRtcEngine.setupRemoteVideo} method to initialize the
+     * - Ensure that you have called the [setupRemoteVideo]{@link AgoraRtcEngine.setupRemoteVideo} method to initialize the
      * remote video view before calling this method.
      * - During a call, you can call this method as many times as necessary to update the display mode of the video
      * view of a remote user.
      *
      * @param userId The ID of the remote user.
-     * @param renderMode The rendering mode of the remote video view. See [RENDER_MODE_TYPE]{@link agoraRtcEngine.RENDER_MODE_TYPE}.
-     * @param mirrorMode The mirror mode of the remote video view. See [VIDEO_MIRROR_MODE_TYPE]{@link agoraRtcEngine.VIDEO_MIRROR_MODE_TYPE}.
+     * @param renderMode The rendering mode of the remote video view. See [RENDER_MODE_TYPE]{@link AgoraRtcEngine.RENDER_MODE_TYPE}.
+     * @param mirrorMode The mirror mode of the remote video view. See [VIDEO_MIRROR_MODE_TYPE]{@link AgoraRtcEngine.VIDEO_MIRROR_MODE_TYPE}.
      *
      * **Note**
      *
@@ -6296,17 +6312,17 @@ var AgoraRtcEngine;
      * @ignore
      * Sets the local video mirror mode.
      *
-     * @deprecated This method is deprecated, use the [setupLocalVideo]{@link agoraRtcEngine.setupLocalVideo} or
-     * [setLocalRenderMode]{@link agoraRtcEngine.setLocalRenderMode} method instead.
+     * @deprecated This method is deprecated, use the [setupLocalVideo]{@link AgoraRtcEngine.setupLocalVideo} or
+     * [setLocalRenderMode]{@link AgoraRtcEngine.setLocalRenderMode} method instead.
      *
-     * You must call this method before calling the [startPreview]{@link agoraRtcEngine.startPreview} method, otherwise the
+     * You must call this method before calling the [startPreview]{@link AgoraRtcEngine.startPreview} method, otherwise the
      * mirror mode will not work.
      *
      * **Warning**
      * - Call this method after calling the `setupLocalVideo` method to initialize the local video view.
      * - During a call, you can call this method as many times as necessary to update the mirror mode of the local video view.
      *
-     * @param mirrorMode Sets the local video mirror mode. See [VIDEO_MIRROR_MODE_TYPE]{@link agoraRtcEngine.VIDEO_MIRROR_MODE_TYPE}.
+     * @param mirrorMode Sets the local video mirror mode. See [VIDEO_MIRROR_MODE_TYPE]{@link AgoraRtcEngine.VIDEO_MIRROR_MODE_TYPE}.
      *
      * @return
      * - 0: Success.
@@ -6334,7 +6350,7 @@ var AgoraRtcEngine;
     AgoraRtcEngine.enableDualStreamMode = enableDualStreamMode;
     /**
      * @ignore
-     * Sets the external audio source. Please call this method before [joinChannel]{@link agoraRtcEngine.joinChannel}.
+     * Sets the external audio source. Please call this method before [joinChannel]{@link AgoraRtcEngine.joinChannel}.
      *
      * @param enabled Sets whether to enable/disable the external audio source:
      * - true: Enables the external audio source.
@@ -6363,7 +6379,7 @@ var AgoraRtcEngine;
      *
      * This method applies to scenarios where you want to use external audio
      * data for playback. After enabling the external audio sink, you can call
-     * the [pullAudioFrame]{@link agoraRtcEngine.pullAudioFrame} method to pull the
+     * the [pullAudioFrame]{@link AgoraRtcEngine.pullAudioFrame} method to pull the
      * remote audio data, process it, and play it with the audio effects that you want.
      *
      * @note Once you enable the external audio sink, the app will not retrieve any
@@ -6400,7 +6416,7 @@ var AgoraRtcEngine;
      * @param channel Sets the number of audio channels (`channels`) returned in the *onRecordAudioFrame* callback:
      * - 1: Mono
      * - 2: Stereo
-     * @param mode Sets the use mode (see [RAW_AUDIO_FRAME_OP_MODE_TYPE)]{@link agoraRtcEngine.RAW_AUDIO_FRAME_OP_MODE_TYPE)} of the *onRecordAudioFrame* callback.
+     * @param mode Sets the use mode (see [RAW_AUDIO_FRAME_OP_MODE_TYPE)]{@link AgoraRtcEngine.RAW_AUDIO_FRAME_OP_MODE_TYPE)} of the *onRecordAudioFrame* callback.
      * @param samplesPerCall Sets the number of samples returned in the *onRecordAudioFrame* callback. `samplesPerCall` is usually set as 1024 for RTMP streaming.
      * @note The SDK triggers the `onRecordAudioFrame` callback according to the sample interval. Ensure that the sample interval ≥ 0.01 (s). And, Sample interval (sec) = `samplePerCall`/(`sampleRate` × `channel`).
      * @return
@@ -6418,14 +6434,14 @@ var AgoraRtcEngine;
     AgoraRtcEngine.setRecordingAudioFrameParameters = setRecordingAudioFrameParameters;
     /**
      * @ignore
-     * Sets the audio playback format for the [onPlaybackAudioFrame]{@link agoraRtcEngine.onPlaybackAudioFrame} callback.
+     * Sets the audio playback format for the [onPlaybackAudioFrame]{@link AgoraRtcEngine.onPlaybackAudioFrame} callback.
      *
      * @param sampleRate Sets the sample rate (`samplesPerSec`) returned in the *onPlaybackAudioFrame* callback,
      * which can be set as 8000, 16000, 32000, 44100, or 48000 Hz.
      * @param channel Sets the number of channels (`channels`) returned in the *onPlaybackAudioFrame* callback:
      * - 1: Mono
      * - 2: Stereo
-     * @param mode Sets the use mode (see [RAW_AUDIO_FRAME_OP_MODE_TYPE)]{@link agoraRtcEngine.RAW_AUDIO_FRAME_OP_MODE_TYPE)} of the
+     * @param mode Sets the use mode (see [RAW_AUDIO_FRAME_OP_MODE_TYPE)]{@link AgoraRtcEngine.RAW_AUDIO_FRAME_OP_MODE_TYPE)} of the
      * `onPlaybackAudioFrame` callback.
      * @param samplesPerCall Sets the number of samples returned in the `onPlaybackAudioFrame` callback. `samplesPerCall`
      * is usually set as 1024 for RTMP streaming.
@@ -6447,7 +6463,7 @@ var AgoraRtcEngine;
     AgoraRtcEngine.setPlaybackAudioFrameParameters = setPlaybackAudioFrameParameters;
     /**
      * @ignore
-     * Sets the mixed audio format for the [onMixedAudioFrame]{@link agoraRtcEngine.onMixedAudioFrame} callback.
+     * Sets the mixed audio format for the [onMixedAudioFrame]{@link AgoraRtcEngine.onMixedAudioFrame} callback.
      *
      * @param sampleRate Sets the sample rate (`samplesPerSec`) returned in the `onMixedAudioFrame` callback, which can be set as
      * 8000, 16000, 32000, 44100, or 48000 Hz.
@@ -6472,7 +6488,7 @@ var AgoraRtcEngine;
      *
      * @param volume Recording volume. To avoid echoes and improve call quality,
      * Agora recommends setting the value of volume between 0 and 100. If you
-     * need to set the value higher than 100, contact support@agoraRtcEngine.io first.
+     * need to set the value higher than 100, contact support@AgoraRtcEngine.io first.
      * - 0: Mute.
      * - 100: Original volume.
      *
@@ -6493,12 +6509,12 @@ var AgoraRtcEngine;
      *
      * - This method adjusts the playback volume that is the mixed volume of all remote users.
      * - (Since v3.1.2) To mute the local audio playback, call both the `adjustPlaybackSignalVolume` and
-     * [adjustAudioMixingVolume]{@link agoraRtcEngine.adjustAudioMixingVolume} methods and set the volume as `0`.
+     * [adjustAudioMixingVolume]{@link AgoraRtcEngine.adjustAudioMixingVolume} methods and set the volume as `0`.
      *
      * @param volume The playback volume of all remote users. To avoid echoes and
      * improve call quality, Agora recommends setting the value of volume between
      * 0 and 100. If you need to set the value higher than 100, contact
-     * support@agoraRtcEngine.io first.
+     * support@AgoraRtcEngine.io first.
      * - 0: Mute.
      * - 100: Original volume.
      *
@@ -6542,7 +6558,7 @@ var AgoraRtcEngine;
      * Sets the preferences for the high-quality video. (`LIVE_BROADCASTING` only).
      *
      * @deprecated This method is deprecated. Agora recommends using the `degradationPrefer` parameter of
-     * [VideoEncoderConfiguration]{@link agoraRtcEngine.VideoEncoderConfiguration}.
+     * [VideoEncoderConfiguration]{@link AgoraRtcEngine.VideoEncoderConfiguration}.
      *
      * @param preferFrameRateOverImageQuality Sets the video quality preference:
      * - true: Frame rate over image quality.
@@ -6562,7 +6578,7 @@ var AgoraRtcEngine;
      * Sets the fallback option for the published video stream based on the network conditions.
      *
      * If `option` is set as
-     * [STREAM_FALLBACK_OPTION_AUDIO_ONLY]{@link agoraRtcEngine.STREAM_FALLBACK_OPTIONS.STREAM_FALLBACK_OPTION_AUDIO_ONLY}(2),
+     * [STREAM_FALLBACK_OPTION_AUDIO_ONLY]{@link AgoraRtcEngine.STREAM_FALLBACK_OPTIONS.STREAM_FALLBACK_OPTION_AUDIO_ONLY}(2),
      * the SDK will:
      * - Disable the upstream video but enable audio only when the network conditions deteriorate and cannot support
      * both video and audio.
@@ -6575,7 +6591,7 @@ var AgoraRtcEngine;
      * have a noticeable lag when the published video stream falls back to audio only.
      *
      * @param option Sets the fallback option for the published video stream. See
-     * [STREAM_FALLBACK_OPTIONS]{@link agoraRtcEngine.STREAM_FALLBACK_OPTIONS}.
+     * [STREAM_FALLBACK_OPTIONS]{@link AgoraRtcEngine.STREAM_FALLBACK_OPTIONS}.
      *
      * @return
      * - 0: Success.
@@ -6591,12 +6607,12 @@ var AgoraRtcEngine;
      * Sets the fallback option for the remotely subscribed video stream based on the network conditions.
      *
      * The default setting for `option` is
-     * [STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW]{@link agoraRtcEngine.STREAM_FALLBACK_OPTIONS.STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW}(1),
+     * [STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW]{@link AgoraRtcEngine.STREAM_FALLBACK_OPTIONS.STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW}(1),
      * where the remotely subscribed video stream falls back to the low-stream video (low resolution and low bitrate) under poor
      * downlink network conditions.
      *
      * If `option` is set as
-     * [STREAM_FALLBACK_OPTION_AUDIO_ONLY]{@link agoraRtcEngine.STREAM_FALLBACK_OPTIONS.STREAM_FALLBACK_OPTION_AUDIO_ONLY} (2), the
+     * [STREAM_FALLBACK_OPTION_AUDIO_ONLY]{@link AgoraRtcEngine.STREAM_FALLBACK_OPTIONS.STREAM_FALLBACK_OPTION_AUDIO_ONLY} (2), the
      * SDK automatically switches the video from a high-stream to a low-stream, or disables the video when the downlink network
      * conditions cannot support both audio and video to guarantee the quality of the audio. The SDK monitors the network quality
      * and restores the video stream when the network conditions improve.
@@ -6606,7 +6622,7 @@ var AgoraRtcEngine;
      * callback.
      *
      * @param  option  Sets the fallback option for the remotely subscribed video stream. See
-     * [STREAM_FALLBACK_OPTIONS]{@link agoraRtcEngine.STREAM_FALLBACK_OPTIONS}.
+     * [STREAM_FALLBACK_OPTIONS]{@link AgoraRtcEngine.STREAM_FALLBACK_OPTIONS}.
      *
      * @return
      * - 0: Success.
@@ -6621,7 +6637,7 @@ var AgoraRtcEngine;
     /**
      * Switches between front and rear cameras.
      *
-     * @param direction Sets the camera to be used. See [CAMERA_DIRECTION]{@link agoraRtcEngine.CAMERA_DIRECTION}.
+     * @param direction Sets the camera to be used. See [CAMERA_DIRECTION]{@link AgoraRtcEngine.CAMERA_DIRECTION}.
      *
      * @return
      * - 0: Success.
@@ -6640,14 +6656,14 @@ var AgoraRtcEngine;
      * This method sets whether the received audio is routed to the earpiece or speakerphone by default before joining a channel.
      *
      * If a user does not call this method, the audio is routed to the earpiece by default. If you need to change the default
-     * audio route after joining a channel, call the [setEnableSpeakerphone]{@link agoraRtcEngine.setEnableSpeakerphone} method.
+     * audio route after joining a channel, call the [setEnableSpeakerphone]{@link AgoraRtcEngine.setEnableSpeakerphone} method.
      *
      * The default setting for each profile:
      * - `COMMUNICATION`: In a voice call, the default audio route is the earpiece. In a video call, the default audio
      * route is the speakerphone. If a user who is in the `COMMUNICATION` profile calls the
-     * [disableVideo]{@link agoraRtcEngine.disableVideo} method or if the user calls the
-     * [muteLocalVideoStream]{@link agoraRtcEngine.muteLocalVideoStream} and
-     * [muteAllRemoteVideoStreams]{@link agoraRtcEngine.muteAllRemoteVideoStreams} methods, the default audio route switches
+     * [disableVideo]{@link AgoraRtcEngine.disableVideo} method or if the user calls the
+     * [muteLocalVideoStream]{@link AgoraRtcEngine.muteLocalVideoStream} and
+     * [muteAllRemoteVideoStreams]{@link AgoraRtcEngine.muteAllRemoteVideoStreams} methods, the default audio route switches
      * back to the earpiece automatically.
      * - `LIVE_BROADCASTING`: Speakerphone.
      *
@@ -6655,7 +6671,7 @@ var AgoraRtcEngine;
      *
      * - This method is applicable only to the `COMMUNICATION` profile.
      * - For iOS, this method only works in a voice call.
-     * - Call this method before calling the [joinChannel]{@link agoraRtcEngine.joinChannel} method.
+     * - Call this method before calling the [joinChannel]{@link AgoraRtcEngine.joinChannel} method.
      *
      * @param defaultToSpeaker Sets the default audio route:
      * - true: Route the audio to the speakerphone. If the playback device connects to the earpiece or Bluetooth, the
@@ -6678,12 +6694,12 @@ var AgoraRtcEngine;
      * This method sets whether the audio is routed to the speakerphone or earpiece.
      *
      * See the default audio route explanation in the
-     * [setDefaultAudioRouteToSpeakerphone]{@link agoraRtcEngine.setDefaultAudioRouteToSpeakerphone} method and check whether it
+     * [setDefaultAudioRouteToSpeakerphone]{@link AgoraRtcEngine.setDefaultAudioRouteToSpeakerphone} method and check whether it
      * is necessary to call this method.
      *
      * **Note**
      *
-     * - Ensure that you have successfully called the [joinChannel]{@link agoraRtcEngine.joinChannel} method before calling this method.
+     * - Ensure that you have successfully called the [joinChannel]{@link AgoraRtcEngine.joinChannel} method before calling this method.
      * - After calling this method, the SDK returns the [onAudioRouteChanged]{@link AgoraRtcEvents.onAudioRouteChanged}
      * callback to indicate the changes.
      * - This method does not take effect if a headset is used.
@@ -6854,7 +6870,7 @@ var AgoraRtcEngine;
      * Retrieves the current call ID.
      *
      * When a user joins a channel on a client, a `callId` is generated to identify the call from the client. Feedback
-     * methods, such as [rate]{@link agoraRtcEngine.rate} and [complain]{@link agoraRtcEngine.complain} , must be called after the call
+     * methods, such as [rate]{@link AgoraRtcEngine.rate} and [complain]{@link AgoraRtcEngine.complain} , must be called after the call
      * ends to submit feedback to the SDK.
      *
      * The `rate` and `complain` methods require the `callId` parameter retrieved from the `getCallId` method during a
@@ -6869,7 +6885,7 @@ var AgoraRtcEngine;
     /**
      * Allows a user to rate a call after the call ends.
      *
-     * @param callId The ID of the call, retrieved from the [getCallId]{@link agoraRtcEngine.getCallId} method.
+     * @param callId The ID of the call, retrieved from the [getCallId]{@link AgoraRtcEngine.getCallId} method.
      * @param rating  Rating of the call. The value is between 1 (lowest score) and 5 (highest score). If you set a
      * value out of this range, the `ERR_INVALID_ARGUMENT(-2)` error returns.
      * @param description (Optional) The description of the rating, with a string length of less than 800 bytes.
@@ -6885,7 +6901,7 @@ var AgoraRtcEngine;
     /**
      * Allows a user to complain about the call quality after a call ends.
      *
-     * @param callId The ID of the call, retrieved from the [getCallId]{@link agoraRtcEngine.getCallId} method.
+     * @param callId The ID of the call, retrieved from the [getCallId]{@link AgoraRtcEngine.getCallId} method.
      * @param description (Optional) The description of the complaint, with a string length of less than 800 bytes.
      *
      * @return
@@ -6914,7 +6930,7 @@ var AgoraRtcEngine;
      *
      * This method consumes additional network traffic, and hence may affect communication quality.
      *
-     * Call the [disableLastmileTest]{@link agoraRtcEngine.disableLastmileTest} method to disable this test after receiving
+     * Call the [disableLastmileTest]{@link AgoraRtcEngine.disableLastmileTest} method to disable this test after receiving
      * the [onLastmileQuality]{@link AgoraRtcEvents.onLastmileQuality} callback, and before joining a channel.
      *
      * **Note**
@@ -6924,7 +6940,7 @@ var AgoraRtcEngine;
      * - A host should not call this method after joining a channel (when in a call).
      * - If you call this method to test the last-mile quality, the SDK consumes the bandwidth of a video stream, whose
      * bitrate corresponds to the bitrate you set in the
-     * [setVideoEncoderConfiguration]{@link agoraRtcEngine.setVideoEncoderConfiguration} method. After you join the channel,
+     * [setVideoEncoderConfiguration]{@link AgoraRtcEngine.setVideoEncoderConfiguration} method. After you join the channel,
      * whether you have called the `disableLastmileTest` method or not, the SDK automatically stops consuming the bandwidth.
      *
      * @return
@@ -6963,13 +6979,13 @@ var AgoraRtcEngine;
      * **Note**
      *
      * - This method consumes extra network traffic and may affect communication quality. We do not recommend calling this method
-     * together with [enableLastmileTest]{@link agoraRtcEngine.enableLastmileTest}.
+     * together with [enableLastmileTest]{@link AgoraRtcEngine.enableLastmileTest}.
      * - Do not call other methods before receiving the `onLastmileQuality` and `onLastmileProbeResult` callbacks. Otherwise,
      * the callbacks may be interrupted.
      * - In the `LIVE_BROADCASTING` profile, a host should not call this method after joining a channel.
      *
      * @param config Sets the configurations of the last-mile network probe test. See
-     * [LastmileProbeConfig]{@link agoraRtcEngine.LastmileProbeConfig}.
+     * [LastmileProbeConfig]{@link AgoraRtcEngine.LastmileProbeConfig}.
      *
      * @return
      * - 0: Success.
@@ -6996,7 +7012,7 @@ var AgoraRtcEngine;
      * @param code Warning code or error code returned in the [onWarning]{@link AgoraRtcEvents.onWarning} or
      * [onError]{@link AgoraRtcEvents.onError} callback.
      *
-     * @return See [WARN_CODE_TYPE]{@link agoraRtcEngine.WARN_CODE_TYPE} or [ERROR_CODE_TYPE]{@link agoraRtcEngine.ERROR_CODE_TYPE}.
+     * @return See [WARN_CODE_TYPE]{@link AgoraRtcEngine.WARN_CODE_TYPE} or [ERROR_CODE_TYPE]{@link AgoraRtcEngine.ERROR_CODE_TYPE}.
      */
     function getErrorDescription(code) {
         return callNativeMethod(API_TYPE.GET_ERROR_DESCRIPTION, { code: code });
@@ -7005,7 +7021,7 @@ var AgoraRtcEngine;
     /**
      * Enables built-in encryption with an encryption password before users join a channel.
      *
-     * @deprecated This method is deprecated from v3.1.2. Use the [enableEncryption]{@link agoraRtcEngine.enableEncryption} instead.
+     * @deprecated This method is deprecated from v3.1.2. Use the [enableEncryption]{@link AgoraRtcEngine.enableEncryption} instead.
      *
      * All users in a channel must use the same encryption password. The encryption password is automatically cleared
      * once a user leaves the channel.
@@ -7031,7 +7047,7 @@ var AgoraRtcEngine;
     /**
      * Sets the built-in encryption mode.
      *
-     * @deprecated This method is deprecated from v3.1.2. Use the [enableEncryption]{@link agoraRtcEngine.enableEncryption} instead.
+     * @deprecated This method is deprecated from v3.1.2. Use the [enableEncryption]{@link AgoraRtcEngine.enableEncryption} instead.
      *
      * The Agora SDK supports built-in encryption, which is set to the `aes-128-xts` mode by default. Call this method
      * to use other encryption modes.
@@ -7039,7 +7055,7 @@ var AgoraRtcEngine;
      *
      * Refer to the information related to the AES encryption algorithm on the differences between the encryption modes.
      *
-     * @note Call the [setEncryptionSecret]{@link agoraRtcEngine.setEncryptionSecret} method to enable the built-in encryption
+     * @note Call the [setEncryptionSecret]{@link AgoraRtcEngine.setEncryptionSecret} method to enable the built-in encryption
      * function before calling this method.
      *
      * @param encryptionMode The set encryption mode:
@@ -7074,7 +7090,7 @@ var AgoraRtcEngine;
      * @param enabled Whether to enable the built-in encryption:
      * - true: Enable the built-in encryption.
      * - false: Disable the built-in encryption.
-     * @param config Configurations of built-in encryption schemas. See [EncryptionConfig]{@link agoraRtcEngine.EncryptionConfig}.
+     * @param config Configurations of built-in encryption schemas. See [EncryptionConfig]{@link AgoraRtcEngine.EncryptionConfig}.
      *
      * @return
      * - 0: Success.
@@ -7155,7 +7171,7 @@ var AgoraRtcEngine;
      * @note This method applies only to the `COMMUNICATION` profile or to the hosts in the `LIVE_BROADCASTING` profile.
      * If an audience in the `LIVE_BROADCASTING` profile calls this method, the audience may be switched to a host.
      *
-     * @param streamId ID of the sent data stream, returned in the [createDataStream]{@link agoraRtcEngine.createDataStream} method.
+     * @param streamId ID of the sent data stream, returned in the [createDataStream]{@link AgoraRtcEngine.createDataStream} method.
      * @param data The sent data.
      * @param length Length of the sent data.
      *
@@ -7185,10 +7201,10 @@ var AgoraRtcEngine;
      * @param url The CDN streaming URL in the RTMP format. The maximum length of this parameter is 1024 bytes. The RTMP URL address
      * must not contain special characters, such as Chinese language characters.
      * @param transcodingEnabled Sets whether transcoding is enabled/disabled:
-     * - true: Enable transcoding. To [transcode](https://docs.agoraRtcEngine.io/en/Agora%20Platform/terms?platform=All%20Platforms#transcoding)
+     * - true: Enable transcoding. To [transcode](https://docs.AgoraRtcEngine.io/en/Agora%20Platform/terms?platform=All%20Platforms#transcoding)
      * the audio or video streams when publishing them to CDN live, often used for combining the audio and video streams of multiple
      * hosts in CDN live. If you set this parameter as `true`, ensure that you call the
-     * [setLiveTranscoding]{@link agoraRtcEngine.setLiveTranscoding} method before this method.
+     * [setLiveTranscoding]{@link AgoraRtcEngine.setLiveTranscoding} method before this method.
      * - false: Disable transcoding.
      *
      * @return
@@ -7207,7 +7223,7 @@ var AgoraRtcEngine;
     /**
      * Removes an RTMP stream from the CDN. (CDN live only.)
      *
-     * This method removes the RTMP URL address (added by the [addPublishStreamUrl]{@link agoraRtcEngine.addPublishStreamUrl}
+     * This method removes the RTMP URL address (added by the [addPublishStreamUrl]{@link AgoraRtcEngine.addPublishStreamUrl}
      * method) from a CDN live stream. The SDK returns the result of this method call in the
      * [onStreamUnpublished]{@link AgoraRtcEvents.onStreamUnpublished} callback.
      *
@@ -7244,7 +7260,7 @@ var AgoraRtcEngine;
      * - If you call the `setLiveTranscoding` method to update the transcoding setting for the first time, the SDK does
      * not trigger the `onTranscodingUpdated` callback.
      *
-     * @param transcoding Sets the CDN live audio/video transcoding settings. See [LiveTranscoding]{@link agoraRtcEngine.LiveTranscoding}.
+     * @param transcoding Sets the CDN live audio/video transcoding settings. See [LiveTranscoding]{@link AgoraRtcEngine.LiveTranscoding}.
      *
      * @return
      * - 0: Success.
@@ -7261,28 +7277,28 @@ var AgoraRtcEngine;
      * the audience in the channel (CDN audience included), and the recording device can see and capture it. Agora supports
      * adding only one watermark image onto the local video, and the newly watermark image replaces the previous one.
      *
-     * The watermark position depends on the settings in the [setVideoEncoderConfiguration]{@link agoraRtcEngine.setVideoEncoderConfiguration}
+     * The watermark position depends on the settings in the [setVideoEncoderConfiguration]{@link AgoraRtcEngine.setVideoEncoderConfiguration}
      * method:
      * - If the orientation mode of the encoding video is
-     * [ORIENTATION_MODE_FIXED_LANDSCAPE]{@link agoraRtcEngine.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE} or the landscape mode in
-     * [ORIENTATION_MODE_ADAPTIVE]{@link agoraRtcEngine.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE}, the watermark uses the landscape orientation.
+     * [ORIENTATION_MODE_FIXED_LANDSCAPE]{@link AgoraRtcEngine.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_LANDSCAPE} or the landscape mode in
+     * [ORIENTATION_MODE_ADAPTIVE]{@link AgoraRtcEngine.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE}, the watermark uses the landscape orientation.
      * - If the orientation mode of the encoding video is
-     * [ORIENTATION_MODE_FIXED_PORTRAIT]{@link agoraRtcEngine.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT} or the portrait mode in
-     * [ORIENTATION_MODE_ADAPTIVE]{@link agoraRtcEngine.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE}, the watermark uses the portrait orientation.
+     * [ORIENTATION_MODE_FIXED_PORTRAIT]{@link AgoraRtcEngine.ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT} or the portrait mode in
+     * [ORIENTATION_MODE_ADAPTIVE]{@link AgoraRtcEngine.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE}, the watermark uses the portrait orientation.
      * - When setting the watermark position, the region must be less than the dimensions set in the `setVideoEncoderConfiguration`
      * method. Otherwise, the watermark image will be cropped.
      *
      * **Note**
      *
-     * - Ensure that you have called the [enableVideo]{@link agoraRtcEngine.enableVideo} method to enable the video module before calling this
+     * - Ensure that you have called the [enableVideo]{@link AgoraRtcEngine.enableVideo} method to enable the video module before calling this
      * method.
      * - If you only want to add a watermark image to the local video for the audience in the CDN live streaming channel to see and
-     * capture, you can call this method or the [setLiveTranscoding]{@link agoraRtcEngine.setLiveTranscoding} method.
+     * capture, you can call this method or the [setLiveTranscoding]{@link AgoraRtcEngine.setLiveTranscoding} method.
      * - This method supports adding a watermark image in the PNG file format only. Supported pixel formats of the PNG image are RGBA,
      * RGB, Palette, Gray, and Alpha_gray.
      * - If the dimensions of the PNG image differ from your settings in this method, the image will be cropped or zoomed to conform
      * to your settings.
-     * - If you have enabled the local video preview by calling the [startPreview]{@link agoraRtcEngine.startPreview} method, you can use the
+     * - If you have enabled the local video preview by calling the [startPreview]{@link AgoraRtcEngine.startPreview} method, you can use the
      * `visibleInPreview` member in the `WatermarkOptions` class to set whether or not the watermark is visible in preview.
      * - If you have enabled the mirror mode for the local video, the watermark on the local video is also mirrored. To avoid mirroring
      * the watermark, Agora recommends that you do not use the mirror and watermark functions for the local video at the same time.
@@ -7290,7 +7306,7 @@ var AgoraRtcEngine;
      *
      * @param watermarkUrl The local file path of the watermark image to be added. This method supports adding a watermark image
      * from the local absolute or relative file path.
-     * @param options The watermark's options to be added. See [WatermarkOptions]{@link agoraRtcEngine.WatermarkOptions}.
+     * @param options The watermark's options to be added. See [WatermarkOptions]{@link AgoraRtcEngine.WatermarkOptions}.
      *
      * @return
      * - 0: Success.
@@ -7305,7 +7321,7 @@ var AgoraRtcEngine;
     AgoraRtcEngine.addVideoWatermark = addVideoWatermark;
     /**
      * Removes the watermark image from the video stream added by the
-     * [addVideoWatermark]{@link agoraRtcEngine.addVideoWatermark} method.
+     * [addVideoWatermark]{@link AgoraRtcEngine.addVideoWatermark} method.
      *
      * @return
      * - 0: Success.
@@ -7320,7 +7336,7 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * - Call this method after calling the [enableVideo]{@link agoraRtcEngine.enableVideo} method.
+     * - Call this method after calling the [enableVideo]{@link AgoraRtcEngine.enableVideo} method.
      * - Currently this method does not apply for macOS.
      *
      * @param enabled Sets whether or not to enable image enhancement:
@@ -7364,7 +7380,7 @@ var AgoraRtcEngine;
      * @param url The URL address to be added to the ongoing streaming. Valid protocols are RTMP, HLS, and HTTP-FLV.
      * - Supported audio codec type: AAC.
      * - Supported video codec type: H264 (AVC).
-     * @param config [InjectStreamConfig]{@link agoraRtcEngine.InjectStreamConfig} contains the configuration of
+     * @param config [InjectStreamConfig]{@link AgoraRtcEngine.InjectStreamConfig} contains the configuration of
      * the added voice or video stream.
      *
      * @return
@@ -7374,7 +7390,7 @@ var AgoraRtcEngine;
      * ensure that the URL is valid.
      *   - -3(`ERR_NOT_READY`): The user is not in the channel.
      *   - -4(`ERR_NOT_SUPPORTED`): The channel profile is not `LIVE_BROADCASTING`. Call the
-     * [setChannelProfile]{@link agoraRtcEngine.setChannelProfile} method and set the channel profile to `LIVE_BROADCASTING`
+     * [setChannelProfile]{@link AgoraRtcEngine.setChannelProfile} method and set the channel profile to `LIVE_BROADCASTING`
      * before calling this method.
      *   - -7(ERR_NOT_INITIALIZED): The SDK is not initialized. Ensure that the Agora engine is initialized before
      * calling this method.
@@ -7391,25 +7407,25 @@ var AgoraRtcEngine;
      * [onChannelMediaRelayEvent]{@link AgoraRtcEvents.onChannelMediaRelayEvent} callbacks, and these callbacks return the
      * state and events of the media stream relay.
      * - If the `onChannelMediaRelayStateChanged` callback returns
-     * [RELAY_STATE_RUNNING]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_STATE.RELAY_STATE_RUNNING}(2) and
-     * [RELAY_OK]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_ERROR.RELAY_OK}(0), and the `onChannelMediaRelayEvent` callback returns
-     * [RELAY_EVENT_PACKET_SENT_TO_DEST_CHANNEL]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_EVENT.RELAY_EVENT_PACKET_SENT_TO_DEST_CHANNEL}(4),
+     * [RELAY_STATE_RUNNING]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_STATE.RELAY_STATE_RUNNING}(2) and
+     * [RELAY_OK]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_ERROR.RELAY_OK}(0), and the `onChannelMediaRelayEvent` callback returns
+     * [RELAY_EVENT_PACKET_SENT_TO_DEST_CHANNEL]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_EVENT.RELAY_EVENT_PACKET_SENT_TO_DEST_CHANNEL}(4),
      * the host starts sending data to the destination channel.
      * - If the `onChannelMediaRelayStateChanged` callback returns
-     * [RELAY_STATE_FAILURE]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_STATE.RELAY_STATE_FAILURE}(3), an exception occurs during
+     * [RELAY_STATE_FAILURE]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_STATE.RELAY_STATE_FAILURE}(3), an exception occurs during
      * the media stream relay.
      *
      * **Note**
      *
-     * - Call this method after the [joinChannel]{@link agoraRtcEngine.joinChannel} method.
+     * - Call this method after the [joinChannel]{@link AgoraRtcEngine.joinChannel} method.
      * - This method takes effect only when you are a host in a `LIVE_BROADCASTING` channel.
      * - After a successful method call, if you want to call this method again, ensure that you call the
-     * [stopChannelMediaRelay]{@link agoraRtcEngine.stopChannelMediaRelay} method to quit the current relay.
-     * - Contact sales-us@agoraRtcEngine.io before implementing this function.
+     * [stopChannelMediaRelay]{@link AgoraRtcEngine.stopChannelMediaRelay} method to quit the current relay.
+     * - Contact sales-us@AgoraRtcEngine.io before implementing this function.
      * - We do not support string user accounts in this API.
      *
      * @param configuration The configuration of the media stream relay:
-     * [ChannelMediaRelayConfiguration]{@link agoraRtcEngine.ChannelMediaRelayConfiguration}.
+     * [ChannelMediaRelayConfiguration]{@link AgoraRtcEngine.ChannelMediaRelayConfiguration}.
      *
      * @return
      * - 0: Success.
@@ -7424,19 +7440,19 @@ var AgoraRtcEngine;
     /**
      * Updates the channels for media stream relay.
      *
-     * After a successful [startChannelMediaRelay]{@link agoraRtcEngine.startChannelMediaRelay} method call, if you want to
+     * After a successful [startChannelMediaRelay]{@link AgoraRtcEngine.startChannelMediaRelay} method call, if you want to
      * relay the media  stream to more channels, or leave the current relay channel, you can call the
-     * [updateChannelMediaRelay]{@link agoraRtcEngine.updateChannelMediaRelay} method.
+     * [updateChannelMediaRelay]{@link AgoraRtcEngine.updateChannelMediaRelay} method.
      *
      * After a successful method call, the SDK triggers the
      * [onChannelMediaRelayEvent]{@link AgoraRtcEvents.onChannelMediaRelayEvent} callback with the
-     * [RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_EVENT.RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL}(7)
+     * [RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_EVENT.RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL}(7)
      * state code.
      *
      * @note Call this method after the `startChannelMediaRelay` method to update the destination channel.
      *
      * @param configuration The media stream relay configuration:
-     * [ChannelMediaRelayConfiguration]{@link agoraRtcEngine.ChannelMediaRelayConfiguration}.
+     * [ChannelMediaRelayConfiguration]{@link AgoraRtcEngine.ChannelMediaRelayConfiguration}.
      *
      * @return
      * - 0: Success.
@@ -7455,13 +7471,13 @@ var AgoraRtcEngine;
      *
      * After a successful method call, the SDK triggers the
      * [onChannelMediaRelayStateChanged]{@link AgoraRtcEvents.onChannelMediaRelayStateChanged} callback. If the callback returns
-     * [RELAY_STATE_IDLE]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_STATE.RELAY_STATE_IDLE}(0) and
-     * [RELAY_OK]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_ERROR.RELAY_OK}(0), the host successfully stops the relay.
+     * [RELAY_STATE_IDLE]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_STATE.RELAY_STATE_IDLE}(0) and
+     * [RELAY_OK]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_ERROR.RELAY_OK}(0), the host successfully stops the relay.
      *
      * @note If the method call fails, the SDK triggers the `onChannelMediaRelayStateChanged` callback with the
-     * [RELAY_ERROR_SERVER_NO_RESPONSE]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_ERROR.RELAY_ERROR_SERVER_NO_RESPONSE}(2) or
-     * [RELAY_ERROR_SERVER_CONNECTION_LOST]{@link agoraRtcEngine.CHANNEL_MEDIA_RELAY_ERROR.RELAY_ERROR_SERVER_CONNECTION_LOST}(8) state code.
-     * You can leave the channel by calling the [leaveChannel]{@link agoraRtcEngine.leaveChannel} method, and the media stream relay
+     * [RELAY_ERROR_SERVER_NO_RESPONSE]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_ERROR.RELAY_ERROR_SERVER_NO_RESPONSE}(2) or
+     * [RELAY_ERROR_SERVER_CONNECTION_LOST]{@link AgoraRtcEngine.CHANNEL_MEDIA_RELAY_ERROR.RELAY_ERROR_SERVER_CONNECTION_LOST}(8) state code.
+     * You can leave the channel by calling the [leaveChannel]{@link AgoraRtcEngine.leaveChannel} method, and the media stream relay
      * automatically stops.
      *
      * @return
@@ -7475,7 +7491,7 @@ var AgoraRtcEngine;
     /**
      * Removes the voice or video stream URL address from the live streaming.
      *
-     * This method removes the URL address (added by the [addInjectStreamUrl]{@link agoraRtcEngine.addInjectStreamUrl} method) from the
+     * This method removes the URL address (added by the [addInjectStreamUrl]{@link AgoraRtcEngine.addInjectStreamUrl} method) from the
      * live streaming.
      *
      * @note If this method is called successfully, the SDK triggers the [onUserOffline]{@link AgoraRtcEvents.onUserOffline} callback
@@ -7497,7 +7513,7 @@ var AgoraRtcEngine;
      * This function is in the beta stage with a free trial. The ability provided in its beta test version is reporting a maximum of
      * 10 message pieces within 6 seconds, with each message piece not exceeding 256 bytes.
      *
-     * To try out this function, contact [support@agoraRtcEngine.io](mailto:support@agoraRtcEngine.io) and discuss the format of customized messages
+     * To try out this function, contact [support@AgoraRtcEngine.io](mailto:support@AgoraRtcEngine.io) and discuss the format of customized messages
      * with us.
      */
     function sendCustomReportMessage(id, category, event, label, value) {
@@ -7513,7 +7529,7 @@ var AgoraRtcEngine;
     /**
      * Gets the current connection state of the SDK.
      *
-     * @return See [CONNECTION_STATE_TYPE]{@link agoraRtcEngine.CONNECTION_STATE_TYPE}.
+     * @return See [CONNECTION_STATE_TYPE]{@link AgoraRtcEngine.CONNECTION_STATE_TYPE}.
      */
     function getConnectionState() {
         return callNativeMethod(API_TYPE.GET_CONNECTION_STATE);
@@ -7537,9 +7553,9 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * - Call this method after [registerMediaMetadataObserver]{@link agoraRtcEngine.registerMediaMetadataObserver}.
+     * - Call this method after [registerMediaMetadataObserver]{@link AgoraRtcEngine.registerMediaMetadataObserver}.
      * - Ensure that the size of the metadata does not exceed the value set in the
-     * [setMaxMetadataSize]{@link agoraRtcEngine.setMaxMetadataSize} callback.
+     * [setMaxMetadataSize]{@link AgoraRtcEngine.setMaxMetadataSize} callback.
      *
      * @param uid ID of the user who sends the metadata.
      * @param size The size of the sent metadata.
@@ -7556,7 +7572,7 @@ var AgoraRtcEngine;
     }
     AgoraRtcEngine.sendMetadata = sendMetadata;
     /**
-     * Sets the maximum size of the [Metadata]{@link agoraRtcEngine.Metadata}.
+     * Sets the maximum size of the [Metadata]{@link AgoraRtcEngine.Metadata}.
      *
      * The metadata includes the following parameters:
      * - `uid`: ID of the user who sends the metadata.
@@ -7564,7 +7580,7 @@ var AgoraRtcEngine;
      * - `buffer`: The sent or received metadata.
      * - `timeStampMs`: The timestamp (ms) of the metadata.
      *
-     * @note Call this method after [registerMediaMetadataObserver]{@link agoraRtcEngine.registerMediaMetadataObserver}.
+     * @note Call this method after [registerMediaMetadataObserver]{@link AgoraRtcEngine.registerMediaMetadataObserver}.
      *
      * @param size The maximum size of the buffer of the metadata that you want to use. The highest value is 1024 bytes.
      *
@@ -7586,10 +7602,10 @@ var AgoraRtcEngine;
      *
      * **Note**
      *
-     * - Call this method before the [joinChannel]{@link agoraRtcEngine.joinChannel} method.
+     * - Call this method before the [joinChannel]{@link AgoraRtcEngine.joinChannel} method.
      * - This method applies to the `LIVE_BROADCASTING` channel profile.
      *
-     * @param type See [METADATA_TYPE]{@link agoraRtcEngine.METADATA_TYPE}. The SDK supports `VIDEO_METADATA(0)` only for now.
+     * @param type See [METADATA_TYPE]{@link AgoraRtcEngine.METADATA_TYPE}. The SDK supports `VIDEO_METADATA(0)` only for now.
      *
      * @return
      * - 0: Success.
@@ -7740,3 +7756,1234 @@ var AgoraRtcEngine;
         },
     };
 })(AgoraRtcEngine || (AgoraRtcEngine = {}));
+
+},{"yuv-buffer":2,"yuv-canvas":9}],2:[function(require,module,exports){
+/*
+Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+MPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+/**
+ * Represents metadata about a YUV frame format.
+ * @typedef {Object} YUVFormat
+ * @property {number} width - width of encoded frame in luma pixels
+ * @property {number} height - height of encoded frame in luma pixels
+ * @property {number} chromaWidth - width of encoded frame in chroma pixels
+ * @property {number} chromaHeight - height of encoded frame in chroma pixels
+ * @property {number} cropLeft - upper-left X coordinate of visible crop region, in luma pixels
+ * @property {number} cropTop - upper-left Y coordinate of visible crop region, in luma pixels
+ * @property {number} cropWidth - width of visible crop region, in luma pixels
+ * @property {number} cropHeight - height of visible crop region, in luma pixels
+ * @property {number} displayWidth - final display width of visible region, in luma pixels
+ * @property {number} displayHeight - final display height of visible region, in luma pixels
+ */
+
+/**
+ * Represents underlying image data for a single luma or chroma plane.
+ * Cannot be interpreted without the format data from a frame buffer.
+ * @typedef {Object} YUVPlane
+ * @property {Uint8Array} bytes - typed array containing image data bytes
+ * @property {number} stride - byte distance between rows in data
+ */
+
+/**
+ * Represents a YUV image frame buffer, with enough format information
+ * to interpret the data usefully. Buffer objects use generic objects
+ * under the hood and can be transferred between worker threads using
+ * the structured clone algorithm.
+ *
+ * @typedef {Object} YUVFrame
+ * @property {YUVFormat} format
+ * @property {YUVPlane} y
+ * @property {YUVPlane} u
+ * @property {YUVPlane} v
+ */
+
+/**
+ * Holder namespace for utility functions and constants related to
+ * YUV frame and plane buffers.
+ *
+ * @namespace
+ */
+var YUVBuffer = {
+  /**
+   * Validate a plane dimension
+   * @param {number} dim - vertical or horizontal dimension
+   * @throws exception on zero, negative, or non-integer value
+   */
+  validateDimension: function(dim) {
+    if (dim <= 0 || dim !== (dim | 0)) {
+      throw 'YUV plane dimensions must be a positive integer';
+    }
+  },
+
+  /**
+   * Validate a plane offset
+   * @param {number} dim - vertical or horizontal dimension
+   * @throws exception on negative or non-integer value
+   */
+  validateOffset: function(dim) {
+    if (dim < 0 || dim !== (dim | 0)) {
+      throw 'YUV plane offsets must be a non-negative integer';
+    }
+  },
+
+  /**
+   * Validate and fill out a YUVFormat object structure.
+   *
+   * At least width and height fields are required; other fields will be
+   * derived if left missing or empty:
+   * - chromaWidth and chromaHeight will be copied from width and height as for a 4:4:4 layout
+   * - cropLeft and cropTop will be 0
+   * - cropWidth and cropHeight will be set to whatever of the frame is visible after cropTop and cropLeft are applied
+   * - displayWidth and displayHeight will be set to cropWidth and cropHeight.
+   *
+   * @param {YUVFormat} fields - input fields, must include width and height.
+   * @returns {YUVFormat} - validated structure, with all derivable fields filled out.
+   * @throws exception on invalid fields or missing width/height
+   */
+  format: function(fields) {
+    var width = fields.width,
+      height = fields.height,
+      chromaWidth = fields.chromaWidth || width,
+      chromaHeight = fields.chromaHeight || height,
+      cropLeft = fields.cropLeft || 0,
+      cropTop = fields.cropTop || 0,
+      cropWidth = fields.cropWidth || width - cropLeft,
+      cropHeight = fields.cropHeight || height - cropTop,
+      displayWidth = fields.displayWidth || cropWidth,
+      displayHeight = fields.displayHeight || cropHeight;
+    this.validateDimension(width);
+    this.validateDimension(height);
+    this.validateDimension(chromaWidth);
+    this.validateDimension(chromaHeight);
+    this.validateOffset(cropLeft);
+    this.validateOffset(cropTop);
+    this.validateDimension(cropWidth);
+    this.validateDimension(cropHeight);
+    this.validateDimension(displayWidth);
+    this.validateDimension(displayHeight);
+    return {
+      width: width,
+      height: height,
+      chromaWidth: chromaWidth,
+      chromaHeight: chromaHeight,
+      cropLeft: cropLeft,
+      cropTop: cropTop,
+      cropWidth: cropWidth,
+      cropHeight: cropHeight,
+      displayWidth: displayWidth,
+      displayHeight: displayHeight
+    };
+  },
+
+  /**
+   * Allocate a new YUVPlane object of the given size.
+   * @param {number} stride - byte distance between rows
+   * @param {number} rows - number of rows to allocate
+   * @returns {YUVPlane} - freshly allocated planar buffer
+   */
+  allocPlane: function(stride, rows) {
+    YUVBuffer.validateDimension(stride);
+    YUVBuffer.validateDimension(rows);
+    return {
+      bytes: new Uint8Array(stride * rows),
+      stride: stride
+    }
+  },
+
+  /**
+   * Pick a suitable stride for a custom-allocated thingy
+   * @param {number} width - width in bytes
+   * @returns {number} - new width in bytes at least as large
+   * @throws exception on invalid input width
+   */
+  suitableStride: function(width) {
+    YUVBuffer.validateDimension(width);
+    var alignment = 4,
+      remainder = width % alignment;
+    if (remainder == 0) {
+      return width;
+    } else {
+      return width + (alignment - remainder);
+    }
+  },
+
+  /**
+   * Allocate or extract a YUVPlane object from given dimensions/source.
+   * @param {number} width - width in pixels
+   * @param {number} height - height in pixels
+   * @param {Uint8Array} source - input byte array; optional (will create empty buffer if missing)
+   * @param {number} stride - row length in bytes; optional (will create a default if missing)
+   * @param {number} offset - offset into source array to extract; optional (will start at 0 if missing)
+   * @returns {YUVPlane} - freshly allocated planar buffer
+   */
+  allocPlane: function(width, height, source, stride, offset) {
+    var size, bytes;
+
+    this.validateDimension(width);
+    this.validateDimension(height);
+
+    offset = offset || 0;
+
+    stride = stride || this.suitableStride(width);
+    this.validateDimension(stride);
+    if (stride < width) {
+      throw "Invalid input stride for YUV plane; must be larger than width";
+    }
+
+    size = stride * height;
+
+    if (source) {
+      if (source.length - offset < size) {
+        throw "Invalid input buffer for YUV plane; must be large enough for stride times height";
+      }
+      bytes = source.slice(offset, offset + size);
+    } else {
+      bytes = new Uint8Array(size);
+      stride = stride || this.suitableStride(width);
+    }
+
+    return {
+      bytes: bytes,
+      stride: stride
+    };
+  },
+
+  /**
+   * Allocate a new YUVPlane object big enough for a luma plane in the given format
+   * @param {YUVFormat} format - target frame format
+   * @param {Uint8Array} source - input byte array; optional (will create empty buffer if missing)
+   * @param {number} stride - row length in bytes; optional (will create a default if missing)
+   * @param {number} offset - offset into source array to extract; optional (will start at 0 if missing)
+   * @returns {YUVPlane} - freshly allocated planar buffer
+   */
+  lumaPlane: function(format, source, stride, offset) {
+    return this.allocPlane(format.width, format.height, source, stride, offset);
+  },
+
+  /**
+   * Allocate a new YUVPlane object big enough for a chroma plane in the given format,
+   * optionally copying data from an existing buffer.
+   *
+   * @param {YUVFormat} format - target frame format
+   * @param {Uint8Array} source - input byte array; optional (will create empty buffer if missing)
+   * @param {number} stride - row length in bytes; optional (will create a default if missing)
+   * @param {number} offset - offset into source array to extract; optional (will start at 0 if missing)
+   * @returns {YUVPlane} - freshly allocated planar buffer
+   */
+  chromaPlane: function(format, source, stride, offset) {
+    return this.allocPlane(format.chromaWidth, format.chromaHeight, source, stride, offset);
+  },
+
+  /**
+   * Allocate a new YUVFrame object big enough for the given format
+   * @param {YUVFormat} format - target frame format
+   * @param {YUVPlane} y - optional Y plane; if missing, fresh one will be allocated
+   * @param {YUVPlane} u - optional U plane; if missing, fresh one will be allocated
+   * @param {YUVPlane} v - optional V plane; if missing, fresh one will be allocated
+   * @returns {YUVFrame} - freshly allocated frame buffer
+   */
+  frame: function(format, y, u, v) {
+    y = y || this.lumaPlane(format);
+    u = u || this.chromaPlane(format);
+    v = v || this.chromaPlane(format);
+    return {
+      format: format,
+      y: y,
+      u: u,
+      v: v
+    }
+  },
+
+  /**
+   * Duplicate a plane using new buffer memory.
+   * @param {YUVPlane} plane - input plane to copy
+   * @returns {YUVPlane} - freshly allocated and filled planar buffer
+   */
+  copyPlane: function(plane) {
+    return {
+      bytes: plane.bytes.slice(),
+      stride: plane.stride
+    };
+  },
+
+  /**
+   * Duplicate a frame using new buffer memory.
+   * @param {YUVFrame} frame - input frame to copyFrame
+   * @returns {YUVFrame} - freshly allocated and filled frame buffer
+   */
+  copyFrame: function(frame) {
+    return {
+      format: frame.format,
+      y: this.copyPlane(frame.y),
+      u: this.copyPlane(frame.u),
+      v: this.copyPlane(frame.v)
+    }
+  },
+
+  /**
+   * List the backing buffers for the frame's planes for transfer between
+   * threads via Worker.postMessage.
+   * @param {YUVFrame} frame - input frame
+   * @returns {Array} - list of transferable objects
+   */
+  transferables: function(frame) {
+    return [frame.y.bytes.buffer, frame.u.bytes.buffer, frame.v.bytes.buffer];
+  }
+};
+
+module.exports = YUVBuffer;
+
+},{}],3:[function(require,module,exports){
+module.exports = {
+  vertex: "precision lowp float;\n\nattribute vec2 aPosition;\nattribute vec2 aLumaPosition;\nattribute vec2 aChromaPosition;\nvarying vec2 vLumaPosition;\nvarying vec2 vChromaPosition;\nvoid main() {\n    gl_Position = vec4(aPosition, 0, 1);\n    vLumaPosition = aLumaPosition;\n    vChromaPosition = aChromaPosition;\n}\n",
+  fragment: "// inspired by https://github.com/mbebenita/Broadway/blob/master/Player/canvas.js\n\nprecision lowp float;\n\nuniform sampler2D uTextureY;\nuniform sampler2D uTextureCb;\nuniform sampler2D uTextureCr;\nvarying vec2 vLumaPosition;\nvarying vec2 vChromaPosition;\nvoid main() {\n   // Y, Cb, and Cr planes are uploaded as LUMINANCE textures.\n   float fY = texture2D(uTextureY, vLumaPosition).x;\n   float fCb = texture2D(uTextureCb, vChromaPosition).x;\n   float fCr = texture2D(uTextureCr, vChromaPosition).x;\n\n   // Premultipy the Y...\n   float fYmul = fY * 1.1643828125;\n\n   // And convert that to RGB!\n   gl_FragColor = vec4(\n     fYmul + 1.59602734375 * fCr - 0.87078515625,\n     fYmul - 0.39176171875 * fCb - 0.81296875 * fCr + 0.52959375,\n     fYmul + 2.017234375   * fCb - 1.081390625,\n     1\n   );\n}\n",
+  vertexStripe: "precision lowp float;\n\nattribute vec2 aPosition;\nattribute vec2 aTexturePosition;\nvarying vec2 vTexturePosition;\n\nvoid main() {\n    gl_Position = vec4(aPosition, 0, 1);\n    vTexturePosition = aTexturePosition;\n}\n",
+  fragmentStripe: "// extra 'stripe' texture fiddling to work around IE 11's poor performance on gl.LUMINANCE and gl.ALPHA textures\n\nprecision lowp float;\n\nuniform sampler2D uStripe;\nuniform sampler2D uTexture;\nvarying vec2 vTexturePosition;\nvoid main() {\n   // Y, Cb, and Cr planes are mapped into a pseudo-RGBA texture\n   // so we can upload them without expanding the bytes on IE 11\n   // which doesn't allow LUMINANCE or ALPHA textures\n   // The stripe textures mark which channel to keep for each pixel.\n   // Each texture extraction will contain the relevant value in one\n   // channel only.\n\n   float fLuminance = dot(\n      texture2D(uStripe, vTexturePosition),\n      texture2D(uTexture, vTexturePosition)\n   );\n\n   gl_FragColor = vec4(fLuminance, fLuminance, fLuminance, 1);\n}\n"
+};
+
+},{}],4:[function(require,module,exports){
+(function() {
+  "use strict";
+
+  /**
+   * Create a YUVCanvas and attach it to an HTML5 canvas element.
+   *
+   * This will take over the drawing context of the canvas and may turn
+   * it into a WebGL 3d canvas if possible. Do not attempt to use the
+   * drawing context directly after this.
+   *
+   * @param {HTMLCanvasElement} canvas - HTML canvas element to attach to
+   * @param {YUVCanvasOptions} options - map of options
+   * @throws exception if WebGL requested but unavailable
+   * @constructor
+   * @abstract
+   */
+  function FrameSink(canvas, options) {
+    throw new Error('abstract');
+  }
+
+  /**
+   * Draw a single YUV frame on the underlying canvas, converting to RGB.
+   * If necessary the canvas will be resized to the optimal pixel size
+   * for the given buffer's format.
+   *
+   * @param {YUVBuffer} buffer - the YUV buffer to draw
+   * @see {@link https://www.npmjs.com/package/yuv-buffer|yuv-buffer} for format
+   */
+  FrameSink.prototype.drawFrame = function(buffer) {
+    throw new Error('abstract');
+  };
+
+  /**
+   * Clear the canvas using appropriate underlying 2d or 3d context.
+   */
+  FrameSink.prototype.clear = function() {
+    throw new Error('abstract');
+  };
+
+  module.exports = FrameSink;
+
+})();
+
+},{}],5:[function(require,module,exports){
+/*
+Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+MPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+(function() {
+	"use strict";
+
+	var FrameSink = require('./FrameSink.js'),
+		YCbCr = require('./YCbCr.js');
+
+	/**
+	 * @param {HTMLCanvasElement} canvas - HTML canvas eledment to attach to
+	 * @constructor
+	 */
+	function SoftwareFrameSink(canvas) {
+		var self = this,
+			ctx = canvas.getContext('2d'),
+			imageData = null,
+			resampleCanvas = null,
+			resampleContext = null;
+
+
+
+		function initImageData(width, height) {
+			imageData = ctx.createImageData(width, height);
+
+			// Prefill the alpha to opaque
+			var data = imageData.data,
+				pixelCount = width * height * 4;
+			for (var i = 0; i < pixelCount; i += 4) {
+				data[i + 3] = 255;
+			}
+		}
+
+		function initResampleCanvas(cropWidth, cropHeight) {
+			resampleCanvas = document.createElement('canvas');
+			resampleCanvas.width = cropWidth;
+			resampleCanvas.height = cropHeight;
+			resampleContext = resampleCanvas.getContext('2d');
+		}
+
+		/**
+		 * Actually draw a frame into the canvas.
+		 * @param {YUVFrame} buffer - YUV frame buffer object to draw
+		 */
+		self.drawFrame = function drawFrame(buffer) {
+			var format = buffer.format;
+
+			if (canvas.width !== format.displayWidth || canvas.height !== format.displayHeight) {
+				// Keep the canvas at the right size...
+				canvas.width = format.displayWidth;
+				canvas.height = format.displayHeight;
+			}
+
+			if (imageData === null ||
+					imageData.width != format.width ||
+					imageData.height != format.height) {
+				initImageData(format.width, format.height);
+			}
+
+			// YUV -> RGB over the entire encoded frame
+			YCbCr.convertYCbCr(buffer, imageData.data);
+
+			var resample = (format.cropWidth != format.displayWidth || format.cropHeight != format.displayHeight);
+			var drawContext;
+			if (resample) {
+				// hack for non-square aspect-ratio
+				// putImageData doesn't resample, so we have to draw in two steps.
+				if (!resampleCanvas) {
+					initResampleCanvas(format.cropWidth, format.cropHeight);
+				}
+				drawContext = resampleContext;
+			} else {
+				drawContext = ctx;
+			}
+
+			// Draw cropped frame to either the final or temporary canvas
+			drawContext.putImageData(imageData,
+				-format.cropLeft, -format.cropTop, // must offset the offset
+				format.cropLeft, format.cropTop,
+				format.cropWidth, format.cropHeight);
+
+			if (resample) {
+				ctx.drawImage(resampleCanvas, 0, 0, format.displayWidth, format.displayHeight);
+			}
+		};
+
+		self.clear = function() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		};
+
+		return self;
+	}
+
+	SoftwareFrameSink.prototype = Object.create(FrameSink.prototype);
+
+	module.exports = SoftwareFrameSink;
+})();
+
+},{"./FrameSink.js":4,"./YCbCr.js":7}],6:[function(require,module,exports){
+/*
+Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+MPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+(function() {
+	"use strict";
+
+	var FrameSink = require('./FrameSink.js'),
+		shaders = require('../build/shaders.js');
+
+	/**
+	 * Warning: canvas must not have been used for 2d drawing prior!
+	 *
+	 * @param {HTMLCanvasElement} canvas - HTML canvas element to attach to
+	 * @constructor
+	 */
+	function WebGLFrameSink(canvas) {
+		var self = this,
+			gl = WebGLFrameSink.contextForCanvas(canvas),
+			debug = false; // swap this to enable more error checks, which can slow down rendering
+
+		if (gl === null) {
+			throw new Error('WebGL unavailable');
+		}
+
+		// GL!
+		function checkError() {
+			if (debug) {
+				err = gl.getError();
+				if (err !== 0) {
+					throw new Error("GL error " + err);
+				}
+			}
+		}
+
+		function compileShader(type, source) {
+			var shader = gl.createShader(type);
+			gl.shaderSource(shader, source);
+			gl.compileShader(shader);
+
+			if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+				var err = gl.getShaderInfoLog(shader);
+				gl.deleteShader(shader);
+				throw new Error('GL shader compilation for ' + type + ' failed: ' + err);
+			}
+
+			return shader;
+		}
+
+
+		var program,
+			unpackProgram,
+			err;
+
+		// In the world of GL there are no rectangles.
+		// There are only triangles.
+		// THERE IS NO SPOON.
+		var rectangle = new Float32Array([
+			// First triangle (top left, clockwise)
+			-1.0, -1.0,
+			+1.0, -1.0,
+			-1.0, +1.0,
+
+			// Second triangle (bottom right, clockwise)
+			-1.0, +1.0,
+			+1.0, -1.0,
+			+1.0, +1.0
+		]);
+
+		var textures = {};
+		var framebuffers = {};
+		var stripes = {};
+		var buf, positionLocation, unpackPositionLocation;
+		var unpackTexturePositionBuffer, unpackTexturePositionLocation;
+		var stripeLocation, unpackTextureLocation;
+		var lumaPositionBuffer, lumaPositionLocation;
+		var chromaPositionBuffer, chromaPositionLocation;
+
+		function createOrReuseTexture(name) {
+			if (!textures[name]) {
+				textures[name] = gl.createTexture();
+			}
+			return textures[name];
+		}
+
+		function uploadTexture(name, width, height, data) {
+			var texture = createOrReuseTexture(name);
+			gl.activeTexture(gl.TEXTURE0);
+
+			if (WebGLFrameSink.stripe) {
+				var uploadTemp = !textures[name + '_temp'];
+				var tempTexture = createOrReuseTexture(name + '_temp');
+				gl.bindTexture(gl.TEXTURE_2D, tempTexture);
+				if (uploadTemp) {
+					// new texture
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+					gl.texImage2D(
+						gl.TEXTURE_2D,
+						0, // mip level
+						gl.RGBA, // internal format
+						width / 4,
+						height,
+						0, // border
+						gl.RGBA, // format
+						gl.UNSIGNED_BYTE, // type
+						data // data!
+					);
+				} else {
+					// update texture
+					gl.texSubImage2D(
+						gl.TEXTURE_2D,
+						0, // mip level
+						0, // x offset
+						0, // y offset
+						width / 4,
+						height,
+						gl.RGBA, // format
+						gl.UNSIGNED_BYTE, // type
+						data // data!
+					);
+				}
+
+				var stripeTexture = textures[name + '_stripe'];
+				var uploadStripe = !stripeTexture;
+				if (uploadStripe) {
+					stripeTexture = createOrReuseTexture(name + '_stripe');
+				}
+				gl.bindTexture(gl.TEXTURE_2D, stripeTexture);
+				if (uploadStripe) {
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+					gl.texImage2D(
+						gl.TEXTURE_2D,
+						0, // mip level
+						gl.RGBA, // internal format
+						width,
+						1,
+						0, // border
+						gl.RGBA, // format
+						gl.UNSIGNED_BYTE, //type
+						buildStripe(width, 1) // data!
+					);
+				}
+
+			} else {
+				gl.bindTexture(gl.TEXTURE_2D, texture);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+				gl.texImage2D(
+					gl.TEXTURE_2D,
+					0, // mip level
+					gl.LUMINANCE, // internal format
+					width,
+					height,
+					0, // border
+					gl.LUMINANCE, // format
+					gl.UNSIGNED_BYTE, //type
+					data // data!
+				);
+			}
+		}
+
+		function unpackTexture(name, width, height) {
+			var texture = textures[name];
+
+			// Upload to a temporary RGBA texture, then unpack it.
+			// This is faster than CPU-side swizzling in ANGLE on Windows.
+			gl.useProgram(unpackProgram);
+
+			var fb = framebuffers[name];
+			if (!fb) {
+				// Create a framebuffer and an empty target size
+				gl.activeTexture(gl.TEXTURE0);
+				gl.bindTexture(gl.TEXTURE_2D, texture);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+				gl.texImage2D(
+					gl.TEXTURE_2D,
+					0, // mip level
+					gl.RGBA, // internal format
+					width,
+					height,
+					0, // border
+					gl.RGBA, // format
+					gl.UNSIGNED_BYTE, //type
+					null // data!
+				);
+
+				fb = framebuffers[name] = gl.createFramebuffer();
+			}
+
+			gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+			gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+
+			var tempTexture = textures[name + '_temp'];
+			gl.activeTexture(gl.TEXTURE1);
+			gl.bindTexture(gl.TEXTURE_2D, tempTexture);
+			gl.uniform1i(unpackTextureLocation, 1);
+
+			var stripeTexture = textures[name + '_stripe'];
+			gl.activeTexture(gl.TEXTURE2);
+			gl.bindTexture(gl.TEXTURE_2D, stripeTexture);
+			gl.uniform1i(stripeLocation, 2);
+
+			// Rectangle geometry
+			gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+			gl.enableVertexAttribArray(positionLocation);
+			gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+			// Set up the texture geometry...
+			gl.bindBuffer(gl.ARRAY_BUFFER, unpackTexturePositionBuffer);
+			gl.enableVertexAttribArray(unpackTexturePositionLocation);
+			gl.vertexAttribPointer(unpackTexturePositionLocation, 2, gl.FLOAT, false, 0, 0);
+
+			// Draw into the target texture...
+			gl.viewport(0, 0, width, height);
+
+			gl.drawArrays(gl.TRIANGLES, 0, rectangle.length / 2);
+
+			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+		}
+
+		function attachTexture(name, register, index) {
+			gl.activeTexture(register);
+			gl.bindTexture(gl.TEXTURE_2D, textures[name]);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+			gl.uniform1i(gl.getUniformLocation(program, name), index);
+		}
+
+		function buildStripe(width) {
+			if (stripes[width]) {
+				return stripes[width];
+			}
+			var len = width,
+				out = new Uint32Array(len);
+			for (var i = 0; i < len; i += 4) {
+				out[i    ] = 0x000000ff;
+				out[i + 1] = 0x0000ff00;
+				out[i + 2] = 0x00ff0000;
+				out[i + 3] = 0xff000000;
+			}
+			return stripes[width] = new Uint8Array(out.buffer);
+		}
+
+		function initProgram(vertexShaderSource, fragmentShaderSource) {
+			var vertexShader = compileShader(gl.VERTEX_SHADER, vertexShaderSource);
+			var fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+			var program = gl.createProgram();
+			gl.attachShader(program, vertexShader);
+			gl.attachShader(program, fragmentShader);
+
+			gl.linkProgram(program);
+			if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+				var err = gl.getProgramInfoLog(program);
+				gl.deleteProgram(program);
+				throw new Error('GL program linking failed: ' + err);
+			}
+
+			return program;
+		}
+
+		function init() {
+			if (WebGLFrameSink.stripe) {
+				unpackProgram = initProgram(shaders.vertexStripe, shaders.fragmentStripe);
+				unpackPositionLocation = gl.getAttribLocation(unpackProgram, 'aPosition');
+
+				unpackTexturePositionBuffer = gl.createBuffer();
+				var textureRectangle = new Float32Array([
+					0, 0,
+					1, 0,
+					0, 1,
+					0, 1,
+					1, 0,
+					1, 1
+				]);
+				gl.bindBuffer(gl.ARRAY_BUFFER, unpackTexturePositionBuffer);
+				gl.bufferData(gl.ARRAY_BUFFER, textureRectangle, gl.STATIC_DRAW);
+
+				unpackTexturePositionLocation = gl.getAttribLocation(unpackProgram, 'aTexturePosition');
+				stripeLocation = gl.getUniformLocation(unpackProgram, 'uStripe');
+				unpackTextureLocation = gl.getUniformLocation(unpackProgram, 'uTexture');
+			}
+			program = initProgram(shaders.vertex, shaders.fragment);
+
+			buf = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+			gl.bufferData(gl.ARRAY_BUFFER, rectangle, gl.STATIC_DRAW);
+
+			positionLocation = gl.getAttribLocation(program, 'aPosition');
+			lumaPositionBuffer = gl.createBuffer();
+			lumaPositionLocation = gl.getAttribLocation(program, 'aLumaPosition');
+			chromaPositionBuffer = gl.createBuffer();
+			chromaPositionLocation = gl.getAttribLocation(program, 'aChromaPosition');
+		}
+
+		/**
+		 * Actually draw a frame.
+		 * @param {YUVFrame} buffer - YUV frame buffer object
+		 */
+		self.drawFrame = function(buffer) {
+			var format = buffer.format;
+
+			var formatUpdate = (!program || canvas.width !== format.displayWidth || canvas.height !== format.displayHeight);
+			if (formatUpdate) {
+				// Keep the canvas at the right size...
+				canvas.width = format.displayWidth;
+				canvas.height = format.displayHeight;
+				self.clear();
+			}
+
+			if (!program) {
+				init();
+			}
+
+			if (formatUpdate) {
+				var setupTexturePosition = function(buffer, location, texWidth) {
+					// Warning: assumes that the stride for Cb and Cr is the same size in output pixels
+					var textureX0 = format.cropLeft / texWidth;
+					var textureX1 = (format.cropLeft + format.cropWidth) / texWidth;
+					var textureY0 = (format.cropTop + format.cropHeight) / format.height;
+					var textureY1 = format.cropTop / format.height;
+					var textureRectangle = new Float32Array([
+						textureX0, textureY0,
+						textureX1, textureY0,
+						textureX0, textureY1,
+						textureX0, textureY1,
+						textureX1, textureY0,
+						textureX1, textureY1
+					]);
+
+					gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+					gl.bufferData(gl.ARRAY_BUFFER, textureRectangle, gl.STATIC_DRAW);
+				};
+				setupTexturePosition(
+					lumaPositionBuffer,
+					lumaPositionLocation,
+					buffer.y.stride);
+				setupTexturePosition(
+					chromaPositionBuffer,
+					chromaPositionLocation,
+					buffer.u.stride * format.width / format.chromaWidth);
+			}
+
+			// Create or update the textures...
+			uploadTexture('uTextureY', buffer.y.stride, format.height, buffer.y.bytes);
+			uploadTexture('uTextureCb', buffer.u.stride, format.chromaHeight, buffer.u.bytes);
+			uploadTexture('uTextureCr', buffer.v.stride, format.chromaHeight, buffer.v.bytes);
+
+			if (WebGLFrameSink.stripe) {
+				// Unpack the textures after upload to avoid blocking on GPU
+				unpackTexture('uTextureY', buffer.y.stride, format.height);
+				unpackTexture('uTextureCb', buffer.u.stride, format.chromaHeight);
+				unpackTexture('uTextureCr', buffer.v.stride, format.chromaHeight);
+			}
+
+			// Set up the rectangle and draw it
+			gl.useProgram(program);
+			gl.viewport(0, 0, canvas.width, canvas.height);
+
+			attachTexture('uTextureY', gl.TEXTURE0, 0);
+			attachTexture('uTextureCb', gl.TEXTURE1, 1);
+			attachTexture('uTextureCr', gl.TEXTURE2, 2);
+
+			// Set up geometry
+			gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+			gl.enableVertexAttribArray(positionLocation);
+			gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+			// Set up the texture geometry...
+			gl.bindBuffer(gl.ARRAY_BUFFER, lumaPositionBuffer);
+			gl.enableVertexAttribArray(lumaPositionLocation);
+			gl.vertexAttribPointer(lumaPositionLocation, 2, gl.FLOAT, false, 0, 0);
+
+			gl.bindBuffer(gl.ARRAY_BUFFER, chromaPositionBuffer);
+			gl.enableVertexAttribArray(chromaPositionLocation);
+			gl.vertexAttribPointer(chromaPositionLocation, 2, gl.FLOAT, false, 0, 0);
+
+			// Aaaaand draw stuff.
+			gl.drawArrays(gl.TRIANGLES, 0, rectangle.length / 2);
+		};
+
+		self.clear = function() {
+			gl.viewport(0, 0, canvas.width, canvas.height);
+			gl.clearColor(0.0, 0.0, 0.0, 0.0);
+			gl.clear(gl.COLOR_BUFFER_BIT);
+		};
+
+		self.clear();
+
+		return self;
+	}
+
+	// For Windows; luminance and alpha textures are ssllooww to upload,
+	// so we pack into RGBA and unpack in the shaders.
+	//
+	// This seems to affect all browsers on Windows, probably due to fun
+	// mismatches between GL and D3D.
+	WebGLFrameSink.stripe = (function() {
+		if (navigator.userAgent.indexOf('Windows') !== -1) {
+			return true;
+		}
+		return false;
+	})();
+
+	WebGLFrameSink.contextForCanvas = function(canvas) {
+		var options = {
+			// Don't trigger discrete GPU in multi-GPU systems
+			preferLowPowerToHighPerformance: true,
+			powerPreference: 'low-power',
+			// Don't try to use software GL rendering!
+			failIfMajorPerformanceCaveat: true,
+			// In case we need to capture the resulting output.
+			preserveDrawingBuffer: true
+		};
+		return canvas.getContext('webgl', options) || canvas.getContext('experimental-webgl', options);
+	};
+
+	/**
+	 * Static function to check if WebGL will be available with appropriate features.
+	 *
+	 * @returns {boolean} - true if available
+	 */
+	WebGLFrameSink.isAvailable = function() {
+		var canvas = document.createElement('canvas'),
+			gl;
+		canvas.width = 1;
+		canvas.height = 1;
+		try {
+			gl = WebGLFrameSink.contextForCanvas(canvas);
+		} catch (e) {
+			return false;
+		}
+		if (gl) {
+			var register = gl.TEXTURE0,
+				width = 4,
+				height = 4,
+				texture = gl.createTexture(),
+				data = new Uint8Array(width * height),
+				texWidth = WebGLFrameSink.stripe ? (width / 4) : width,
+				format = WebGLFrameSink.stripe ? gl.RGBA : gl.LUMINANCE,
+				filter = WebGLFrameSink.stripe ? gl.NEAREST : gl.LINEAR;
+
+			gl.activeTexture(register);
+			gl.bindTexture(gl.TEXTURE_2D, texture);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+			gl.texImage2D(
+				gl.TEXTURE_2D,
+				0, // mip level
+				format, // internal format
+				texWidth,
+				height,
+				0, // border
+				format, // format
+				gl.UNSIGNED_BYTE, //type
+				data // data!
+			);
+
+			var err = gl.getError();
+			if (err) {
+				// Doesn't support luminance textures?
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	};
+
+	WebGLFrameSink.prototype = Object.create(FrameSink.prototype);
+
+	module.exports = WebGLFrameSink;
+})();
+
+},{"../build/shaders.js":3,"./FrameSink.js":4}],7:[function(require,module,exports){
+/*
+Copyright (c) 2014-2019 Brion Vibber <brion@pobox.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+MPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+(function() {
+	"use strict";
+
+	var depower = require('./depower.js');
+
+	/**
+	 * Basic YCbCr->RGB conversion
+	 *
+	 * @author Brion Vibber <brion@pobox.com>
+	 * @copyright 2014-2019
+	 * @license MIT-style
+	 *
+	 * @param {YUVFrame} buffer - input frame buffer
+	 * @param {Uint8ClampedArray} output - array to draw RGBA into
+	 * Assumes that the output array already has alpha channel set to opaque.
+	 */
+	function convertYCbCr(buffer, output) {
+		var width = buffer.format.width | 0,
+			height = buffer.format.height | 0,
+			hdec = depower(buffer.format.width / buffer.format.chromaWidth) | 0,
+			vdec = depower(buffer.format.height / buffer.format.chromaHeight) | 0,
+			bytesY = buffer.y.bytes,
+			bytesCb = buffer.u.bytes,
+			bytesCr = buffer.v.bytes,
+			strideY = buffer.y.stride | 0,
+			strideCb = buffer.u.stride | 0,
+			strideCr = buffer.v.stride | 0,
+			outStride = width << 2,
+			YPtr = 0, Y0Ptr = 0, Y1Ptr = 0,
+			CbPtr = 0, CrPtr = 0,
+			outPtr = 0, outPtr0 = 0, outPtr1 = 0,
+			colorCb = 0, colorCr = 0,
+			multY = 0, multCrR = 0, multCbCrG = 0, multCbB = 0,
+			x = 0, y = 0, xdec = 0, ydec = 0;
+
+		if (hdec == 1 && vdec == 1) {
+			// Optimize for 4:2:0, which is most common
+			outPtr0 = 0;
+			outPtr1 = outStride;
+			ydec = 0;
+			for (y = 0; y < height; y += 2) {
+				Y0Ptr = y * strideY | 0;
+				Y1Ptr = Y0Ptr + strideY | 0;
+				CbPtr = ydec * strideCb | 0;
+				CrPtr = ydec * strideCr | 0;
+				for (x = 0; x < width; x += 2) {
+					colorCb = bytesCb[CbPtr++] | 0;
+					colorCr = bytesCr[CrPtr++] | 0;
+
+					// Quickie YUV conversion
+					// https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.2020_conversion
+					// multiplied by 256 for integer-friendliness
+					multCrR   = (409 * colorCr | 0) - 57088 | 0;
+					multCbCrG = (100 * colorCb | 0) + (208 * colorCr | 0) - 34816 | 0;
+					multCbB   = (516 * colorCb | 0) - 70912 | 0;
+
+					multY = 298 * bytesY[Y0Ptr++] | 0;
+					output[outPtr0    ] = (multY + multCrR) >> 8;
+					output[outPtr0 + 1] = (multY - multCbCrG) >> 8;
+					output[outPtr0 + 2] = (multY + multCbB) >> 8;
+					outPtr0 += 4;
+
+					multY = 298 * bytesY[Y0Ptr++] | 0;
+					output[outPtr0    ] = (multY + multCrR) >> 8;
+					output[outPtr0 + 1] = (multY - multCbCrG) >> 8;
+					output[outPtr0 + 2] = (multY + multCbB) >> 8;
+					outPtr0 += 4;
+
+					multY = 298 * bytesY[Y1Ptr++] | 0;
+					output[outPtr1    ] = (multY + multCrR) >> 8;
+					output[outPtr1 + 1] = (multY - multCbCrG) >> 8;
+					output[outPtr1 + 2] = (multY + multCbB) >> 8;
+					outPtr1 += 4;
+
+					multY = 298 * bytesY[Y1Ptr++] | 0;
+					output[outPtr1    ] = (multY + multCrR) >> 8;
+					output[outPtr1 + 1] = (multY - multCbCrG) >> 8;
+					output[outPtr1 + 2] = (multY + multCbB) >> 8;
+					outPtr1 += 4;
+				}
+				outPtr0 += outStride;
+				outPtr1 += outStride;
+				ydec++;
+			}
+		} else {
+			outPtr = 0;
+			for (y = 0; y < height; y++) {
+				xdec = 0;
+				ydec = y >> vdec;
+				YPtr = y * strideY | 0;
+				CbPtr = ydec * strideCb | 0;
+				CrPtr = ydec * strideCr | 0;
+
+				for (x = 0; x < width; x++) {
+					xdec = x >> hdec;
+					colorCb = bytesCb[CbPtr + xdec] | 0;
+					colorCr = bytesCr[CrPtr + xdec] | 0;
+
+					// Quickie YUV conversion
+					// https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.2020_conversion
+					// multiplied by 256 for integer-friendliness
+					multCrR   = (409 * colorCr | 0) - 57088 | 0;
+					multCbCrG = (100 * colorCb | 0) + (208 * colorCr | 0) - 34816 | 0;
+					multCbB   = (516 * colorCb | 0) - 70912 | 0;
+
+					multY = 298 * bytesY[YPtr++] | 0;
+					output[outPtr    ] = (multY + multCrR) >> 8;
+					output[outPtr + 1] = (multY - multCbCrG) >> 8;
+					output[outPtr + 2] = (multY + multCbB) >> 8;
+					outPtr += 4;
+				}
+			}
+		}
+	}
+
+	module.exports = {
+		convertYCbCr: convertYCbCr
+	};
+})();
+
+},{"./depower.js":8}],8:[function(require,module,exports){
+/*
+Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+MPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+(function() {
+  "use strict";
+
+  /**
+   * Convert a ratio into a bit-shift count; for instance a ratio of 2
+   * becomes a bit-shift of 1, while a ratio of 1 is a bit-shift of 0.
+   *
+   * @author Brion Vibber <brion@pobox.com>
+   * @copyright 2016
+   * @license MIT-style
+   *
+   * @param {number} ratio - the integer ratio to convert.
+   * @returns {number} - number of bits to shift to multiply/divide by the ratio.
+   * @throws exception if given a non-power-of-two
+   */
+  function depower(ratio) {
+    var shiftCount = 0,
+      n = ratio >> 1;
+    while (n != 0) {
+      n = n >> 1;
+      shiftCount++
+    }
+    if (ratio !== (1 << shiftCount)) {
+      throw 'chroma plane dimensions must be power of 2 ratio to luma plane dimensions; got ' + ratio;
+    }
+    return shiftCount;
+  }
+
+  module.exports = depower;
+})();
+
+},{}],9:[function(require,module,exports){
+/*
+Copyright (c) 2014-2016 Brion Vibber <brion@pobox.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+MPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+(function() {
+  "use strict";
+
+  var FrameSink = require('./FrameSink.js'),
+    SoftwareFrameSink = require('./SoftwareFrameSink.js'),
+    WebGLFrameSink = require('./WebGLFrameSink.js');
+
+  /**
+   * @typedef {Object} YUVCanvasOptions
+   * @property {boolean} webGL - Whether to use WebGL to draw to the canvas and accelerate color space conversion. If left out, defaults to auto-detect.
+   */
+
+  var YUVCanvas = {
+    FrameSink: FrameSink,
+
+    SoftwareFrameSink: SoftwareFrameSink,
+
+    WebGLFrameSink: WebGLFrameSink,
+
+    /**
+     * Attach a suitable FrameSink instance to an HTML5 canvas element.
+     *
+     * This will take over the drawing context of the canvas and may turn
+     * it into a WebGL 3d canvas if possible. Do not attempt to use the
+     * drawing context directly after this.
+     *
+     * @param {HTMLCanvasElement} canvas - HTML canvas element to attach to
+     * @param {YUVCanvasOptions} options - map of options
+     * @returns {FrameSink} - instance of suitable subclass.
+     */
+    attach: function(canvas, options) {
+      options = options || {};
+      var webGL = ('webGL' in options) ? options.webGL : WebGLFrameSink.isAvailable();
+      if (webGL) {
+        return new WebGLFrameSink(canvas, options);
+      } else {
+        return new SoftwareFrameSink(canvas, options);
+      }
+    }
+  };
+
+  module.exports = YUVCanvas;
+})();
+
+},{"./FrameSink.js":4,"./SoftwareFrameSink.js":5,"./WebGLFrameSink.js":6}]},{},[1]);
