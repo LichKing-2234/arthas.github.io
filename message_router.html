@@ -26,7 +26,7 @@ function sendMessage() {
   });
   console.log('enumeratePlaybackDevices', AgoraRtcEngine.audioDeviceManager.enumeratePlaybackDevices());
   console.log('enumerateRecordingDevices', AgoraRtcEngine.audioDeviceManager.enumerateRecordingDevices());
-  // console.log('enumerateVideoDevices', AgoraRtcEngine.videoDeviceManager.enumerateVideoDevices());
+  console.log('enumerateVideoDevices', AgoraRtcEngine.videoDeviceManager.enumerateVideoDevices());
   // Results in a call to the OnQuery method in client_impl.cc.
   window.cefQuery({
     request: 'MessageRouterTest:' + document.getElementById("message").value,
