@@ -5,9 +5,9 @@ const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
   "AgoraRtcWrapper.bundle.js": "db86b0502e0cc348f7883346e43335f1",
 "version.json": "dcc1d80badab3f4dbcaf74abac829d66",
-"index.html": "e23b3a8146ff1dc2b0963f7167c0e440",
-"/": "e23b3a8146ff1dc2b0963f7167c0e440",
-"main.dart.js": "342b7f551d5ad7f951c7600ea0ea651a",
+"index.html": "f5cb78b86dfc239332390bd5c17248ce",
+"/": "f5cb78b86dfc239332390bd5c17248ce",
+"main.dart.js": "6b8af74ad2719c3158d0aefb5dbae4f4",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
